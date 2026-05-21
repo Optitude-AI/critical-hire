@@ -789,7 +789,7 @@ function WhoConductsSection() {
           <div className="mt-8 max-w-3xl space-y-4 text-muted-foreground leading-relaxed">
             <p>
               Critical Hire is led by{' '}
-              <strong className="text-foreground">Michael O&rsquo;Reilly of Optitude 360</strong>,
+              <strong className="text-foreground">Simon Childs of Optitude 360</strong>,
               drawing on 30 years of interviewing, search, selection, and
               candidate evaluation.
             </p>
