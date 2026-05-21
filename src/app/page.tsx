@@ -1571,13 +1571,27 @@ function Footer() {
 
         <Separator className="my-6 bg-white/10" />
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
-          <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} Optitude 360 Ltd. All rights
-            reserved.
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/40">
+            <a href="/critical-hire/privacy" className="hover:text-white/70 transition-colors">
+              Privacy Policy
+            </a>
+            <a href="/critical-hire/terms" className="hover:text-white/70 transition-colors">
+              Terms of Engagement
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-4 space-y-2">
+          <p className="text-xs text-white/30 leading-relaxed">
+            Optitude 360 and Optitude OCC are trading names of Optitude Business
+            Solutions Ltd, registered in England and Wales under company number
+            12557209. Registered office: 124&ndash;128 City Road, London,
+            England, EC1V 2NX. VAT number: 353967755.
           </p>
           <p className="text-xs text-white/30">
-            Cambridgeshire, United Kingdom
+            &copy; {new Date().getFullYear()} Optitude Business Solutions Ltd.
+            All rights reserved.
           </p>
         </div>
       </div>
