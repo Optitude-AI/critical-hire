@@ -103,3 +103,22 @@ Stage Summary:
 - Fix: Removed basePath from next.config.ts
 - All routes now return 200: /, /download, /privacy, /terms
 - The output: "export" configuration is still in place for Vercel static deployment
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Add booking form link and deploy to Vercel production
+
+Work Log:
+- Replaced all href="#book" links with https://lunacal.ai/optitude-group booking form link
+- Added target="_blank" rel="noopener noreferrer" to all external booking links (7 total)
+- Booking links updated in: Nav (desktop + mobile), Hero CTA, Diagnostic intro CTA, Diagnostic result CTA, Final CTA section, Footer
+- Deployed to Vercel using provided token: preview deployment succeeded
+- Deployed to Vercel production: build succeeded, all 6 pages generated as static content
+- Verified production site returns 200 at https://my-project-mu-green.vercel.app/
+- Verified booking links present in production HTML
+
+Stage Summary:
+- All "Book a Review" / "Book a Critical Hire Review" buttons now link to https://lunacal.ai/optitude-group (opens in new tab)
+- Production deployment live at: https://my-project-mu-green.vercel.app
+- Lint passes clean

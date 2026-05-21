@@ -128,7 +128,7 @@ function Navigation() {
             className="bg-navy hover:bg-navy-light text-white shadow-sm transition-all duration-200"
             asChild
           >
-            <a href="#book">Book a Review</a>
+            <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer">Book a Review</a>
           </Button>
         </div>
 
@@ -163,7 +163,7 @@ function Navigation() {
             className="mt-3 w-full bg-navy hover:bg-navy-light text-white"
             asChild
           >
-            <a href="#book" onClick={() => setOpen(false)}>
+            <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
               Book a Review
             </a>
           </Button>
@@ -241,7 +241,7 @@ function HeroSection() {
                 className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base shadow-md hover:shadow-lg transition-all duration-200"
                 asChild
               >
-                <a href="#book">
+                <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer">
                   Book a Critical Hire Review
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
@@ -1153,7 +1153,7 @@ function DiagnosticSection() {
                   className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
                   asChild
                 >
-                  <a href="#book">
+                  <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer">
                     Book a Critical Hire Review
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
@@ -1320,7 +1320,7 @@ function DiagnosticSection() {
                   className="h-12 px-8 text-base bg-navy hover:bg-navy-light text-white shadow-md hover:shadow-lg transition-all duration-200"
                   asChild
                 >
-                  <a href="#book">
+                  <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer">
                     Book a Critical Hire Review
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
@@ -1504,7 +1504,7 @@ function FinalCTASection() {
                 className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base shadow-md hover:shadow-lg transition-all duration-200"
                 asChild
               >
-                <a href="#book">
+                <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer">
                   Book a Critical Hire Review
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
@@ -1564,7 +1564,7 @@ function Footer() {
               <a href="#diagnostic" className="hover:text-white/70 transition-colors">
                 Diagnostic
               </a>
-              <a href="#book" className="hover:text-white/70 transition-colors">
+              <a href="https://lunacal.ai/optitude-group" target="_blank" rel="noopener noreferrer" className="hover:text-white/70 transition-colors">
                 Book review
               </a>
             </div>
