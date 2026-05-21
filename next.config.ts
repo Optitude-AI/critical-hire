@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
-  basePath: "/critical-hire",
 };
 
 export default nextConfig;

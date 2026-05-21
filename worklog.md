@@ -84,3 +84,22 @@ Stage Summary:
 - Key interactive additions: framer-motion scroll animations, hover effects, staggered reveals, animated mobile nav
 - Key visual improvements: gradient hero background, SVG decorative elements, polished Decision Brief mockup, consistent card hover states
 - All copy matches user's final version exactly including Michael O'Reilly attribution
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Fix "vercel is not working" - site returning 404 at root route
+
+Work Log:
+- Diagnosed issue: next.config.ts had basePath: "/critical-hire" which caused root / to return 404; page was only accessible at /critical-hire
+- Removed basePath: "/critical-hire" from next.config.ts
+- Verified root route now returns 200
+- Verified all other routes still work: /download (200), /privacy (200), /terms (200)
+- Ran lint - passes clean
+- Dev server restarted automatically and is running correctly
+
+Stage Summary:
+- Root cause: basePath: "/critical-hire" in next.config.ts was misconfiguring the site to serve at /critical-hire instead of /
+- Fix: Removed basePath from next.config.ts
+- All routes now return 200: /, /download, /privacy, /terms
+- The output: "export" configuration is still in place for Vercel static deployment
