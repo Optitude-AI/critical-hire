@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Critical Hire — Before You Offer the Job, Test the Decision | Optitude 360",
+  title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
   description:
-    "Critical Hire is a final-stage hiring decision review for UK businesses making appointments they cannot afford to get wrong. By Optitude 360 — applying Executive Search Psychology to business-critical hiring decisions.",
+    "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing to a consequential hire.",
   keywords: [
     "critical hire",
     "hiring risk",
@@ -25,25 +25,28 @@ export const metadata: Metadata = {
     "reduce hiring risk",
     "bad hire cost",
     "hiring decision support",
+    "selection support",
+    "final-stage selection",
+    "pre-offer review",
     "Cambridgeshire business",
     "UK SME hiring",
     "Optitude 360",
     "Executive Search Psychology",
-    "pre-offer review",
+    "Piers Courage Morgan",
   ],
   authors: [{ name: "Optitude 360" }],
   openGraph: {
-    title: "Critical Hire — Before You Offer the Job, Test the Decision",
+    title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
-      "A final-stage hiring decision review for UK businesses making appointments they cannot afford to get wrong. By Optitude 360.",
+      "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing.",
     type: "website",
     siteName: "Critical Hire by Optitude 360",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Critical Hire — Before You Offer the Job, Test the Decision",
+    title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
-      "A final-stage hiring decision review for UK businesses making appointments they cannot afford to get wrong.",
+      "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, and decision risk before committing.",
   },
 };
 
@@ -61,5 +64,5 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
-  );
+  )
 }
