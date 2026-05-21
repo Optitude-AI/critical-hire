@@ -54,3 +54,33 @@ Stage Summary:
 - Key new additions: Decision Clarity Promise (guarantee), three-part positioning strip, "What Critical Hire is not" distinction, Decision Brief preview, 12-question FAQ, Piers Courage Morgan partnership, 6-step process, commercial terms
 - Gold accent (#8B6914) added for Decision Clarity Promise badge and guarantee section
 - All copy now matches user's final version exactly
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Rebuild page with final refined copy, enhanced interactivity, and polished visual design
+
+Work Log:
+- Complete rewrite of page.tsx with user's final refined copy
+- Added framer-motion scroll-triggered animations throughout: FadeIn, StaggerContainer, StaggerItem components
+- New page structure: Hero → Problem → What It Helps You Avoid → Who This Is For → How It Works → What's Included → What You Receive → Attitudinal-Based Selection → Optional Psychological Evaluation → Who Conducts the Review → Commercial Terms → Decision Clarity Promise → Diagnostic CTA → What It Is Not → FAQ → Final CTA → Footer
+- Hero: "You have candidates. Now test the decision." with gradient background, decorative SVG geometric element, animated reveals
+- Problem section: "When the candidate looks good, but the decision still matters" with navy callout card
+- NEW: "What Critical Hire helps you avoid" section with 8 risk cards in 4-column grid with hover effects
+- How it works: 5-step vertical timeline with gradient connectors and hover scale on step numbers
+- Decision Brief preview: polished mockup with navy header bar and numbered sections
+- NEW: "Attitudinal-based selection" section with Fingerprint icon, centered layout
+- NEW: "Optional psychological evaluation" section with Microscope icon
+- Who conducts the review: now names Michael O'Reilly explicitly, with 3 credential cards with hover shadows
+- NEW: "Commercial terms" as separate section with 4 cards (Fee, Timeframe, Designed for, Testing)
+- Decision Clarity Promise: gold badge, gold-bordered guarantee box, 6 understanding items
+- FAQ: 9 questions matching user's final copy exactly
+- Interactive enhancements: scroll-reveal animations, hover scale on step numbers, staggered grid animations, hover shadows on cards, animated mobile nav, gradient connectors in process timeline
+- Visual polish: rounded-xl cards, shadow-sm/hover:shadow-md, gradient backgrounds, refined spacing, bullet-point separators in microcopy
+- Lint passes clean, page returns HTTP 200
+
+Stage Summary:
+- Full rebuild with user's final copy and significantly enhanced interactivity
+- Key interactive additions: framer-motion scroll animations, hover effects, staggered reveals, animated mobile nav
+- Key visual improvements: gradient hero background, SVG decorative elements, polished Decision Brief mockup, consistent card hover states
+- All copy matches user's final version exactly including Michael O'Reilly attribution

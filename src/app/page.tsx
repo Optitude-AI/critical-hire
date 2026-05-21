@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -17,13 +18,11 @@ import {
   FileCheck,
   AlertTriangle,
   Clock,
-  TrendingDown,
   ArrowRight,
   ChevronRight,
   Target,
   Eye,
   Scale,
-  BarChart3,
   CheckCircle2,
   Menu,
   X,
@@ -33,7 +32,62 @@ import {
   UserCheck,
   Layers,
   Microscope,
+  TrendingDown,
+  Handshake,
+  UserMinus,
+  Gauge,
+  Zap,
+  Fingerprint,
+  BookOpen,
 } from 'lucide-react'
+
+/* ─────────── ANIMATION HELPERS ─────────── */
+function FadeIn({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-60px' })
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.6, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function StaggerContainer({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px' }}
+      variants={{
+        visible: { transition: { staggerChildren: 0.08 } },
+        hidden: {},
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function StaggerItem({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] } },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 /* ─────────── NAV ─────────── */
 function Navigation() {
@@ -43,18 +97,17 @@ function Navigation() {
     { label: 'How it works', href: '#how' },
     { label: 'What\u2019s included', href: '#included' },
     { label: 'Diagnostic', href: '#diagnostic' },
-    { label: 'Book review', href: '#book' },
   ]
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
       <nav className="mx-auto max-w-6xl flex items-center justify-between px-6 py-3">
-        <a href="#" className="flex items-center gap-2 group">
-          <div className="h-8 w-8 rounded bg-navy flex items-center justify-center">
-            <ShieldCheck className="h-4.5 w-4.5 text-white" />
+        <a href="#" className="flex items-center gap-2.5 group">
+          <div className="h-9 w-9 rounded-lg bg-navy flex items-center justify-center shadow-sm">
+            <ShieldCheck className="h-5 w-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold tracking-tight text-navy leading-none">
+            <span className="text-sm font-bold tracking-tight text-navy leading-none">
               Critical Hire
             </span>
             <span className="text-[10px] text-muted-foreground tracking-wide leading-none mt-0.5">
@@ -63,27 +116,25 @@ function Navigation() {
           </div>
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-7">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-muted-foreground hover:text-navy transition-colors"
+              className="text-sm text-muted-foreground hover:text-navy transition-colors duration-200"
             >
               {l.label}
             </a>
           ))}
           <Button
             size="sm"
-            className="bg-navy hover:bg-navy-light text-white"
+            className="bg-navy hover:bg-navy-light text-white shadow-sm transition-all duration-200"
             asChild
           >
             <a href="#book">Book a Review</a>
           </Button>
         </div>
 
-        {/* Mobile menu toggle */}
         <button
           className="md:hidden p-2 text-muted-foreground"
           onClick={() => setOpen(!open)}
@@ -93,15 +144,19 @@ function Navigation() {
         </button>
       </nav>
 
-      {/* Mobile nav */}
-      {open && (
-        <div className="md:hidden border-t border-border bg-background px-6 pb-4">
+      <motion.div
+        initial={false}
+        animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="md:hidden overflow-hidden border-t border-border/50"
+      >
+        <div className="bg-background px-6 pb-4">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block py-2.5 text-sm text-muted-foreground hover:text-navy transition-colors border-b border-border/50 last:border-0"
+              className="block py-2.5 text-sm text-muted-foreground hover:text-navy transition-colors border-b border-border/30 last:border-0"
             >
               {l.label}
             </a>
@@ -116,7 +171,7 @@ function Navigation() {
             </a>
           </Button>
         </div>
-      )}
+      </motion.div>
     </header>
   )
 }
@@ -125,77 +180,102 @@ function Navigation() {
 function HeroSection() {
   return (
     <section className="relative overflow-hidden">
-      {/* Subtle hero visual */}
-      <div className="absolute inset-0 flex items-center justify-end pointer-events-none">
-        <div className="relative w-full max-w-xl lg:max-w-2xl opacity-[0.06]">
-          <img
-            src="/hero-visual.png"
-            alt=""
-            aria-hidden="true"
-            className="w-full h-auto object-cover"
-          />
-        </div>
-      </div>
-
-      {/* Subtle dot pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-navy/[0.03] via-transparent to-gold-accent/[0.03]" />
+      <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-        backgroundSize: '40px 40px'
+        backgroundSize: '32px 32px'
       }} />
+
+      {/* Decorative geometric element */}
+      <div className="absolute top-20 right-0 w-80 h-80 lg:w-[500px] lg:h-[500px] opacity-[0.04] pointer-events-none">
+        <svg viewBox="0 0 500 500" fill="none" className="w-full h-full">
+          <rect x="50" y="50" width="400" height="400" stroke="currentColor" strokeWidth="1" rx="2" />
+          <rect x="100" y="100" width="300" height="300" stroke="currentColor" strokeWidth="0.5" rx="2" />
+          <rect x="150" y="150" width="200" height="200" stroke="currentColor" strokeWidth="0.5" rx="2" />
+          <line x1="50" y1="250" x2="450" y2="250" stroke="currentColor" strokeWidth="0.5" />
+          <line x1="250" y1="50" x2="250" y2="450" stroke="currentColor" strokeWidth="0.5" />
+        </svg>
+      </div>
 
       <div className="relative mx-auto max-w-6xl px-6 py-20 md:py-28 lg:py-36">
         <div className="max-w-3xl">
-          {/* Campaign line */}
-          <p className="text-sm font-medium tracking-widest uppercase text-gold-accent mb-6 animate-fade-in-up">
-            Before you offer the job, test the decision
-          </p>
+          <FadeIn>
+            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-gold-accent mb-6">
+              Before you offer the job, test the decision
+            </p>
+          </FadeIn>
 
-          {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold tracking-tight text-navy leading-[1.15] animate-fade-in-up animation-delay-100">
-            Final-stage selection support for businesses that already have candidates
-          </h1>
+          <FadeIn delay={0.1}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-navy leading-[1.12]">
+              You have candidates. Now test the decision.
+            </h1>
+          </FadeIn>
 
-          {/* Subheadline */}
-          <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl animate-fade-in-up animation-delay-200">
-            Critical Hire brings Optitude 360&rsquo;s selection judgement into
-            your existing hiring process. We help test the role, the evidence,
-            the final candidates, and the decision risk before you commit.
-          </p>
+          <FadeIn delay={0.2}>
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
+              Critical Hire gives businesses experienced, independent
+              final-stage selection support before making an offer for a role too
+              important to get wrong.
+            </p>
+          </FadeIn>
 
-          {/* Supporting line */}
-          <p className="mt-4 text-base text-muted-foreground/80 leading-relaxed max-w-2xl animate-fade-in-up animation-delay-300">
-            This is not recruitment. It is not a replacement for HR. It is
-            independent final-stage selection support for roles too important
-            to get wrong.
-          </p>
+          <FadeIn delay={0.3}>
+            <p className="mt-4 text-base text-muted-foreground/80 leading-relaxed max-w-2xl">
+              We work with you while there is still time to act &mdash;
+              reviewing the role, testing the candidate evidence, strengthening
+              final interviews, challenging assumptions, and assessing the
+              decision risk before you commit.
+            </p>
+          </FadeIn>
 
-          {/* CTAs */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-3 animate-fade-in-up animation-delay-400">
-            <Button
-              size="lg"
-              className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base"
-              asChild
-            >
-              <a href="#book">
-                Book a Critical Hire Review
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-12 px-8 text-base border-navy/20 text-navy hover:bg-navy/5"
-              asChild
-            >
-              <a href="#diagnostic">Take the Hiring Risk Diagnostic</a>
-            </Button>
-          </div>
+          <FadeIn delay={0.35}>
+            <p className="mt-3 text-base font-medium text-navy/80 leading-relaxed max-w-2xl">
+              This is not recruitment. It is not a replacement for HR. It is
+              Optitude 360&rsquo;s final-stage selection judgement applied to
+              your live hiring decision.
+            </p>
+          </FadeIn>
 
-          {/* Credibility line */}
-          <p className="mt-6 text-xs text-muted-foreground/60 animate-fade-in-up animation-delay-400">
-            By Optitude 360 &mdash; applying Executive Search Psychology to
-            business-critical hiring decisions.
-          </p>
+          <FadeIn delay={0.4}>
+            <div className="mt-10 flex flex-col sm:flex-row gap-3">
+              <Button
+                size="lg"
+                className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base shadow-md hover:shadow-lg transition-all duration-200"
+                asChild
+              >
+                <a href="#book">
+                  Book a Critical Hire Review
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
+                asChild
+              >
+                <a href="#diagnostic">
+                  Take the 8-Question Diagnostic
+                </a>
+              </Button>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.5}>
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs text-muted-foreground/60">
+              <span>Fixed fee agreed before engagement</span>
+              <span className="hidden sm:inline text-muted-foreground/30">&bull;</span>
+              <span>Typical timeframe: 3&ndash;5 working days</span>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.6}>
+            <p className="mt-5 text-xs text-muted-foreground/40 italic">
+              By Optitude 360 &mdash; applying Executive Search Psychology to
+              business-critical hiring decisions.
+            </p>
+          </FadeIn>
         </div>
       </div>
     </section>
@@ -205,90 +285,114 @@ function HeroSection() {
 /* ─────────── PROBLEM ─────────── */
 function ProblemSection() {
   return (
-    <section id="problem" className="bg-section-alt">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
+    <section id="problem" className="bg-section-alt relative">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            For when the role is too important to get wrong
-          </h2>
+          <FadeIn>
+            <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+              When the candidate looks good, but the decision still matters
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+              <p>A poor hire does not usually look poor at interview.</p>
+              <p>
+                By the final stage, strong candidates are prepared, polished, and
+                persuasive. The business is often tired of the process. The
+                vacancy needs filling. Stakeholders want progress.
+              </p>
+              <p className="text-foreground font-semibold">
+                That is when hiring decisions become vulnerable.
+              </p>
+              <p>
+                Doubts get softened. Assumptions go untested. Interview
+                confidence starts to stand in for evidence.
+              </p>
+            </div>
+          </FadeIn>
         </div>
 
-        <div className="mt-8 max-w-3xl space-y-5 text-muted-foreground leading-relaxed">
-          <p>
-            Some hires carry too much consequence to leave to interview
-            confidence alone.
-          </p>
-          <p>
-            By the final stage, the candidate may look credible, the business
-            may be under pressure, and the shortlist may feel strong. But the
-            real question is not whether the candidate has interviewed well.
-          </p>
-          <p className="text-foreground font-medium">
-            It is whether the evidence supports the appointment.
-          </p>
-          <p>
-            Critical Hire brings Optitude 360&rsquo;s final-stage selection
-            judgement into your existing hiring process. It is designed for
-            businesses that already have candidates and want independent,
-            experienced support before making a role-critical offer.
-          </p>
-          <p>
-            This is not recruitment. It is not a replacement for HR. And it is
-            not generic psychometric testing.
-          </p>
-          <p className="text-foreground font-medium">
-            It is practical selection judgement at the point where a wrong
-            appointment becomes expensive.
-          </p>
-        </div>
-
-        {/* Three-part positioning strip */}
-        <div className="mt-14 grid md:grid-cols-3 gap-0">
-          <div className="bg-navy text-white p-8 md:p-10">
-            <p className="text-xs font-medium tracking-widest uppercase text-white/40 mb-3">
-              01
+        <FadeIn delay={0.2}>
+          <div className="mt-12 rounded-xl bg-navy p-8 md:p-10 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
+            <p className="text-lg md:text-xl font-semibold mb-3">
+              Critical Hire is for that moment.
             </p>
-            <h3 className="text-lg font-semibold mb-2">You have candidates</h3>
-            <p className="text-sm text-white/70 leading-relaxed">
-              The search or sourcing stage is already done.
+            <p className="text-white/75 leading-relaxed max-w-2xl">
+              It gives you senior selection judgement before the offer is made,
+              so you can make the appointment with clearer evidence, sharper
+              questions, and a better understanding of the risk you are
+              accepting.
             </p>
           </div>
-          <div className="bg-navy-light text-white p-8 md:p-10">
-            <p className="text-xs font-medium tracking-widest uppercase text-white/40 mb-3">
-              02
-            </p>
-            <h3 className="text-lg font-semibold mb-2">The role carries risk</h3>
-            <p className="text-sm text-white/70 leading-relaxed">
-              The wrong appointment would affect delivery, clients, culture,
-              compliance, or growth.
-            </p>
-          </div>
-          <div className="bg-navy-dark text-white p-8 md:p-10">
-            <p className="text-xs font-medium tracking-widest uppercase text-white/40 mb-3">
-              03
-            </p>
-            <h3 className="text-lg font-semibold mb-2">The decision needs testing</h3>
-            <p className="text-sm text-white/70 leading-relaxed">
-              Critical Hire strengthens final-stage selection before offer.
-            </p>
-          </div>
-        </div>
+        </FadeIn>
       </div>
     </section>
   )
 }
 
-/* ─────────── WHEN TO USE ─────────── */
-function WhenSection() {
-  const triggers = [
-    'You have one to three final candidates.',
-    'You are close to making an offer.',
-    'The role is commercially, operationally, technically, culturally, client, compliance, or leadership critical.',
-    'The preferred candidate looks strong, but doubts remain.',
-    'Stakeholders disagree about the safest appointment.',
-    'The role has failed before.',
-    'The business is hiring its first serious manager or functional lead.',
-    'The consequences of a wrong hire would be difficult to absorb.',
+/* ─────────── WHAT IT HELPS YOU AVOID ─────────── */
+function AvoidSection() {
+  const risks = [
+    { icon: <UserMinus className="h-4.5 w-4.5" />, label: 'Management distraction' },
+    { icon: <AlertTriangle className="h-4.5 w-4.5" />, label: 'Client disruption' },
+    { icon: <TrendingDown className="h-4.5 w-4.5" />, label: 'Delivery failure' },
+    { icon: <Users className="h-4.5 w-4.5" />, label: 'Team instability' },
+    { icon: <Eye className="h-4.5 w-4.5" />, label: 'Cultural damage' },
+    { icon: <ShieldCheck className="h-4.5 w-4.5" />, label: 'Compliance or safeguarding concerns' },
+    { icon: <Scale className="h-4.5 w-4.5" />, label: 'Loss of confidence in leadership judgement' },
+    { icon: <Clock className="h-4.5 w-4.5" />, label: 'The need to restart the search months later' },
+  ]
+
+  return (
+    <section>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <div className="max-w-3xl">
+            <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+              What Critical Hire helps you avoid
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              A wrong appointment can cost far more than recruitment fees or
+              salary. It can create:
+            </p>
+          </div>
+        </FadeIn>
+
+        <StaggerContainer className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {risks.map((r) => (
+            <StaggerItem key={r.label}>
+              <div className="group flex items-center gap-3 rounded-lg border border-border/50 bg-background p-4 hover:border-destructive/20 hover:bg-destructive/[0.02] transition-all duration-200">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-destructive/5 text-destructive/60 group-hover:bg-destructive/10 group-hover:text-destructive/80 transition-all duration-200">
+                  {r.icon}
+                </div>
+                <span className="text-sm text-foreground leading-snug">{r.label}</span>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
+        <FadeIn delay={0.3}>
+          <p className="mt-8 text-sm font-medium text-navy/70 italic">
+            The safest time to reduce that risk is before the person joins the business.
+          </p>
+        </FadeIn>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── WHO THIS IS FOR ─────────── */
+function WhoSection() {
+  const sectors = [
+    'Owner-managed businesses',
+    'Founder-led SMEs',
+    'Professional-services firms',
+    'Engineering & manufacturing',
+    'Technology & software',
+    'Life-sciences & technical',
+    'Care, veterinary & specialist education',
+    'Growing businesses making first management hire',
   ]
 
   const roles = [
@@ -297,75 +401,76 @@ function WhenSection() {
     'Sales Manager',
     'Practice Manager',
     'Technical Lead',
-    'Registered Manager',
     'Production Manager',
+    'Quality Manager',
+    'Registered Manager',
     'Head of People',
     'Lab Manager',
-    'Quality Manager',
-    'Senior professional-services appointment',
+    'Commercial Manager',
+    'Senior professional-services hire',
   ]
 
   return (
-    <section id="when">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            When to use Critical Hire
+    <section id="when" className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+            Who this is for
           </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            Use Critical Hire when you are close to making an offer and the role
-            is too important to get wrong.
+          <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">
+            Critical Hire is for businesses that already have candidates and are
+            close to making a decision on a role that matters.
           </p>
-        </div>
+        </FadeIn>
 
-        <div className="mt-10 grid lg:grid-cols-2 gap-12">
-          {/* Triggers */}
-          <div>
-            <p className="text-sm font-semibold tracking-widest uppercase text-slate-accent mb-5">
-              Use it when
-            </p>
-            <ul className="space-y-4">
-              {triggers.map((t, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy/10 text-navy text-xs font-semibold mt-0.5">
-                    {i + 1}
-                  </div>
-                  <span className="text-foreground leading-relaxed">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="mt-12 grid lg:grid-cols-2 gap-12">
+          {/* Sectors */}
+          <FadeIn delay={0.1}>
+            <div>
+              <p className="text-xs font-semibold tracking-[0.15em] uppercase text-slate-accent mb-5">
+                Particularly useful for
+              </p>
+              <ul className="space-y-3">
+                {sectors.map((s) => (
+                  <li key={s} className="flex items-center gap-3 text-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-green-dark shrink-0" />
+                    <span className="text-sm leading-relaxed">{s}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeIn>
 
           {/* Roles */}
-          <div>
-            <p className="text-sm font-semibold tracking-widest uppercase text-slate-accent mb-5">
-              Typical roles
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {roles.map((r) => (
-                <span
-                  key={r}
-                  className="inline-flex items-center rounded-md bg-background border border-border/60 px-3 py-1.5 text-sm text-foreground hover:border-navy/30 transition-colors"
-                >
-                  {r}
-                </span>
-              ))}
-            </div>
+          <FadeIn delay={0.2}>
+            <div>
+              <p className="text-xs font-semibold tracking-[0.15em] uppercase text-slate-accent mb-5">
+                Typical roles
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {roles.map((r) => (
+                  <span
+                    key={r}
+                    className="inline-flex items-center rounded-md bg-background border border-border/50 px-3 py-1.5 text-sm text-foreground hover:border-navy/25 hover:bg-navy/[0.02] transition-all duration-200 cursor-default"
+                  >
+                    {r}
+                  </span>
+                ))}
+              </div>
 
-            <div className="mt-6 pt-6 border-t border-border">
-              <p className="text-sm font-medium text-navy">
-                Critical does not mean executive.
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Critical means consequential.
-              </p>
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-                If the wrong person would affect clients, delivery, cashflow,
-                culture, compliance, team confidence, or growth, the decision
-                deserves to be tested.
-              </p>
+              <div className="mt-6 pt-6 border-t border-border/50 space-y-2">
+                <p className="text-sm font-semibold text-navy">
+                  The role does not have to be executive.
+                </p>
+                <p className="text-sm font-semibold text-gold-accent">
+                  It has to be consequential.
+                </p>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                  If the wrong person would create serious disruption, it is a Critical Hire.
+                </p>
+              </div>
             </div>
-          </div>
+          </FadeIn>
         </div>
       </div>
     </section>
@@ -377,109 +482,85 @@ function HowSection() {
   const steps = [
     {
       num: '01',
-      title: 'Role and risk calibration',
-      desc: 'We begin by clarifying the role, the business context, and the consequence of getting the appointment wrong.',
-      detail: 'This includes success criteria, failure risks, stakeholder expectations, commercial exposure, operational impact, and any previous hiring concerns.',
+      title: 'We clarify what is really at stake',
+      desc: 'We begin with the role, the business context, and the cost of getting the appointment wrong.',
+      detail: 'This includes what success needs to look like, where the role could fail, what pressure the business is under, and what evidence is needed before making the offer.',
       icon: <Target className="h-5 w-5" />,
     },
     {
       num: '02',
-      title: 'Final-stage selection design',
-      desc: 'We review or design the final-stage interview approach.',
-      detail: 'This may include structured questioning, attitudinal-based selection, evidence prompts, role-specific scenarios, and areas where candidate claims need to be tested more carefully.',
+      title: 'We strengthen the final selection process',
+      desc: 'We review what has already happened and identify what still needs testing.',
+      detail: 'Depending on the situation, this may include final interview design, attitudinal-based selection questions, role-specific scenarios, or independent questioning of the candidate.',
       icon: <ClipboardCheck className="h-5 w-5" />,
     },
     {
       num: '03',
-      title: 'Candidate questioning and interview support',
-      desc: 'Depending on scope, Optitude 360 may attend final interviews, ask independent questions, or interview candidates directly on the client\u2019s behalf.',
-      detail: 'The purpose is to test judgement, attitude, fit, motivation, pressure response, and suitability for the actual conditions of the role.',
+      title: 'We test the candidate evidence directly',
+      desc: 'Critical Hire is not just a desk review.',
+      detail: 'Where appropriate, we can attend final interviews, ask questions directly, or interview candidates on your behalf. The aim is to understand how the candidate thinks, decides, responds to pressure, handles ambiguity, and fits the real conditions of the role.',
       icon: <MessageSquare className="h-5 w-5" />,
     },
     {
       num: '04',
-      title: 'Evidence and fit review',
-      desc: 'We review the evidence gathered across the process.',
-      detail: 'This includes what has been properly tested, what remains assumed, where candidate fit is strong, and where concerns or gaps remain.',
+      title: 'We test the decision before offer',
+      desc: 'We look at the strength of the evidence behind the appointment.',
+      detail: 'What is known? What is still being assumed? What has not been tested? Where are stakeholders aligned or divided? Is the decision being made on evidence, or under pressure to finish the process?',
       icon: <Search className="h-5 w-5" />,
     },
     {
       num: '05',
-      title: 'Decision-risk analysis',
-      desc: 'We assess the decision risk before the offer is made.',
-      detail: 'This includes candidate risk signals, stakeholder alignment, interview evidence, unresolved concerns, bias or pressure signals, and offer/no-offer considerations.',
-      icon: <AlertTriangle className="h-5 w-5" />,
-    },
-    {
-      num: '06',
-      title: 'Critical Hire Decision Brief',
-      desc: 'You receive a concise written Decision Brief and, where appropriate, a decision discussion before the offer is made.',
-      detail: 'The brief is designed to support a clear, defensible, commercially sensible final decision.',
+      title: 'You receive a clear decision view',
+      desc: 'You receive a Critical Hire Decision Brief setting out the key findings, risks, evidence gaps, fit considerations, and recommended next steps before the offer is made.',
+      detail: 'The final decision remains yours. But you make it with better evidence.',
       icon: <FileCheck className="h-5 w-5" />,
     },
   ]
 
   return (
-    <section id="how" className="bg-section-alt">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+    <section id="how">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
             How Critical Hire works
           </h2>
-        </div>
+        </FadeIn>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6">
-          {steps.map((step) => (
-            <div
-              key={step.num}
-              className="bg-background rounded-lg border border-border/60 p-6 hover:border-navy/20 transition-colors"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-navy text-white font-mono text-xs font-semibold">
-                  {step.num}
+        <div className="mt-14 space-y-0">
+          {steps.map((step, i) => (
+            <FadeIn key={step.num} delay={i * 0.08}>
+              <div className="relative flex gap-6 md:gap-8">
+                {/* Left: step number + connector */}
+                <div className="flex flex-col items-center shrink-0">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-navy text-white font-mono text-sm font-semibold shadow-md cursor-default"
+                  >
+                    {step.num}
+                  </motion.div>
+                  {i < steps.length - 1 && (
+                    <div className="w-px flex-1 bg-gradient-to-b from-navy/20 to-border/50 min-h-[24px]" />
+                  )}
                 </div>
-                <div className="text-navy/50">{step.icon}</div>
-                <h3 className="font-semibold text-navy text-sm">
-                  {step.title}
-                </h3>
+
+                {/* Right: content */}
+                <div className="pb-10 flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="text-navy/40">{step.icon}</div>
+                    <h3 className="font-semibold text-navy text-base md:text-lg">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p className="text-foreground leading-relaxed">
+                    {step.desc}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-1.5">
+                    {step.detail}
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-foreground leading-relaxed">
-                {step.desc}
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                {step.detail}
-              </p>
-            </div>
+            </FadeIn>
           ))}
-        </div>
-
-        {/* Timeframe and fee note */}
-        <div className="mt-10 flex items-start gap-3 p-4 rounded-md bg-navy/5 border border-navy/10">
-          <Clock className="h-4 w-4 text-navy mt-0.5 shrink-0" />
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <span className="font-medium text-navy">Typical timeframe:</span>{' '}
-            3&ndash;5 working days, depending on scope, candidate availability,
-            and whether psychological testing is included.{' '}
-            <span className="font-medium text-navy">The fee is fixed and agreed before engagement.</span>
-          </p>
-        </div>
-
-        {/* Mid-page CTA */}
-        <div className="mt-10 pt-8 border-t border-border">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <p className="text-muted-foreground text-sm">
-              Ready to test your next critical hiring decision?
-            </p>
-            <Button
-              className="bg-navy hover:bg-navy-light text-white"
-              asChild
-            >
-              <a href="#book">
-                Book a Critical Hire Review
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-          </div>
         </div>
       </div>
     </section>
@@ -488,124 +569,203 @@ function HowSection() {
 
 /* ─────────── WHAT'S INCLUDED ─────────── */
 function IncludedSection() {
-  const included = [
+  const items = [
     'Role and risk calibration',
     'Success criteria review',
     'Final interview design',
     'Attitudinal-based selection questions',
     'Attendance at client interviews',
     'Independent candidate questioning',
-    'Candidate interviews conducted on the client\u2019s behalf, where appropriate',
+    'Candidate interviews conducted on your behalf, where appropriate',
     'Review of candidate evidence gathered so far',
-    'Candidate fit and risk assessment',
+    'Candidate fit and evidence review',
     'Stakeholder alignment review',
     'Decision-risk analysis',
     'Offer/no-offer considerations',
     'Critical Hire Decision Brief',
     'Optional 30/60/90-day early-risk watchpoints',
-    'Optional registered psychological testing through Piers Courage Morgan',
-  ]
-
-  const briefContents = [
-    'Role success criteria',
-    'Evidence gathered so far',
-    'Evidence gaps',
-    'Candidate fit against the role context',
-    'Interview findings',
-    'Attitudinal and behavioural risk signals',
-    'Stakeholder alignment considerations',
-    'Decision-risk analysis',
-    'Final questions or checks before offer',
-    'Offer/no-offer considerations',
-    'Recommended next steps',
-  ]
-
-  const commercialTerms = [
-    { label: 'Fee', value: 'Fixed fee agreed before engagement' },
-    { label: 'Timeframe', value: '3\u20135 working days, depending on scope' },
-    { label: 'Designed for', value: 'Final-stage hiring decisions' },
-    { label: 'Suitable where', value: 'Candidates already exist' },
-    { label: 'Testing', value: 'Optional psychological testing quoted separately where appropriate' },
+    'Optional registered psychological testing through specialist partner Piers Courage Morgan',
   ]
 
   return (
-    <section id="included">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+    <section id="included" className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
             What may be included
           </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            Critical Hire is scoped around the role, the stage of the process,
-            and the level of appointment risk. A typical engagement may include:
+          <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">
+            Critical Hire is scoped around the role, the risk, the candidates,
+            and how much support you need before making the offer. A review may
+            include:
           </p>
+        </FadeIn>
+
+        <StaggerContainer className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1">
+          {items.map((item) => (
+            <StaggerItem key={item}>
+              <div className="flex items-start gap-2.5 py-2.5">
+                <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-dark shrink-0" />
+                <span className="text-sm text-foreground leading-relaxed">{item}</span>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── WHAT YOU RECEIVE ─────────── */
+function ReceiveSection() {
+  const briefItems = [
+    'What the role really requires',
+    'What evidence supports the preferred candidate',
+    'What remains untested',
+    'Where candidate fit looks strong',
+    'Where risk remains',
+    'What final questions should be resolved',
+    'Whether the decision is being made with sufficient confidence',
+    'What to watch if the offer proceeds',
+  ]
+
+  return (
+    <section>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <FadeIn>
+            <div>
+              <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+                What you receive
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                You receive a concise <strong className="text-foreground">Critical Hire Decision Brief</strong> covering:
+              </p>
+            </div>
+          </FadeIn>
+
+          <div />
         </div>
 
-        <div className="mt-10 grid lg:grid-cols-2 gap-12">
-          {/* Included items */}
-          <div>
-            <ul className="space-y-3">
-              {included.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-foreground">
-                  <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-dark shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Decision Brief preview */}
-          <div>
-            <div className="rounded-lg border border-border bg-background p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <FileCheck className="h-5 w-5 text-navy" />
-                <h3 className="font-semibold text-navy">
-                  The Critical Hire Decision Brief
-                </h3>
+        {/* Decision Brief mockup */}
+        <FadeIn delay={0.15}>
+          <div className="mt-2 max-w-2xl">
+            <div className="rounded-xl border border-navy/10 bg-white shadow-sm overflow-hidden">
+              {/* Brief header */}
+              <div className="bg-navy px-6 py-4 flex items-center gap-3">
+                <FileCheck className="h-5 w-5 text-white/80" />
+                <span className="text-sm font-semibold text-white tracking-wide">
+                  Critical Hire Decision Brief
+                </span>
               </div>
-              <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                You receive a concise Decision Brief setting out:
-              </p>
-
-              <div className="space-y-0">
-                {briefContents.map((item, i) => (
+              {/* Brief content */}
+              <div className="px-6 py-5 space-y-0">
+                {briefItems.map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 py-2.5 border-b border-border/50 last:border-0"
+                    className="flex items-center gap-3 py-3 border-b border-border/30 last:border-0 group"
                   >
-                    <div className="flex h-5 w-5 items-center justify-center rounded bg-navy/5 text-navy text-[10px] font-semibold shrink-0">
+                    <div className="flex h-6 w-6 items-center justify-center rounded bg-navy/5 text-navy text-[10px] font-bold shrink-0 group-hover:bg-navy/10 transition-colors">
                       {i + 1}
                     </div>
-                    <span className="text-sm text-foreground">{item}</span>
+                    <span className="text-sm text-foreground leading-relaxed">{item}</span>
                   </div>
                 ))}
               </div>
-
-              <div className="mt-5 pt-4 border-t border-border">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  The brief is designed to support a clear, defensible,
-                  commercially sensible final decision.
+              <div className="px-6 py-4 bg-muted/30 border-t border-border/30">
+                <p className="text-xs text-muted-foreground italic">
+                  This gives the business a clearer view before committing.
                 </p>
               </div>
             </div>
-
-            {/* Commercial terms */}
-            <div className="mt-6">
-              <h4 className="text-sm font-semibold tracking-widest uppercase text-slate-accent mb-4">
-                Commercial terms
-              </h4>
-              <div className="space-y-3">
-                {commercialTerms.map((t) => (
-                  <div key={t.label} className="flex items-start gap-3 text-sm">
-                    <span className="font-medium text-navy min-w-[80px] shrink-0">
-                      {t.label}
-                    </span>
-                    <span className="text-muted-foreground">{t.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
+        </FadeIn>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── ATTITUDINAL-BASED SELECTION ─────────── */
+function AttitudinalSection() {
+  return (
+    <section className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="max-w-3xl mx-auto text-center">
+          <FadeIn>
+            <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-navy/5 mb-6">
+              <Fingerprint className="h-6 w-6 text-navy" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+              Attitudinal-based selection
+            </h2>
+            <p className="mt-2 text-lg text-muted-foreground font-medium">
+              Beyond experience. Beyond interview polish.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.15}>
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed text-left max-w-2xl mx-auto">
+              <p>
+                Many hiring processes test what a candidate has done.
+              </p>
+              <p>
+                Critical Hire also examines how they are likely to think,
+                respond, adapt, take responsibility, and perform when the role
+                becomes difficult.
+              </p>
+              <p className="text-foreground font-medium">
+                This is the basis of Optitude 360&rsquo;s attitudinal-based
+                selection approach.
+              </p>
+              <p>
+                It is especially useful when a candidate has strong credentials,
+                but the business needs to understand whether they are right for
+                the actual conditions of the role.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── OPTIONAL PSYCHOLOGICAL EVALUATION ─────────── */
+function PsychologicalSection() {
+  return (
+    <section>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="max-w-3xl mx-auto">
+          <FadeIn>
+            <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-navy/5 mb-6">
+              <Microscope className="h-6 w-6 text-navy" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+              Optional psychological evaluation
+            </h2>
+            <p className="mt-2 text-lg text-muted-foreground font-medium">
+              Additional evidence where the role justifies it.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.15}>
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                Where deeper assessment is appropriate, registered psychological
+                testing can be provided through specialist partner{' '}
+                <strong className="text-foreground">Piers Courage Morgan</strong>.
+              </p>
+              <p>
+                Testing is used selectively. It is not generic psychometric
+                testing, not a clinical assessment, and not a substitute for
+                experienced selection judgement.
+              </p>
+              <p>
+                It is an additional source of evidence where the appointment risk
+                justifies deeper evaluation.
+              </p>
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>
@@ -616,73 +776,113 @@ function IncludedSection() {
 function WhoConductsSection() {
   return (
     <section className="bg-section-alt">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <div className="max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+              Who conducts the review
+            </h2>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <div className="mt-8 max-w-3xl space-y-4 text-muted-foreground leading-relaxed">
+            <p>
+              Critical Hire is led by{' '}
+              <strong className="text-foreground">Michael O&rsquo;Reilly of Optitude 360</strong>,
+              drawing on 30 years of interviewing, search, selection, and
+              candidate evaluation.
+            </p>
+            <p>
+              That experience is applied directly to your live hiring decision:
+              the role, the candidates, the interviews, the evidence, the risks,
+              and the final judgement before offer.
+            </p>
+            <p>
+              Where useful, optional registered psychological testing can be
+              provided through specialist partner{' '}
+              <strong className="text-foreground">Piers Courage Morgan</strong>.
+            </p>
+            <p>
+              Testing is used selectively. It is an additional source of
+              evidence, not a substitute for experienced selection judgement.
+            </p>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.2}>
+          <div className="mt-10 grid sm:grid-cols-3 gap-4">
+            <div className="rounded-xl border border-border/50 bg-background p-6 text-center hover:shadow-md hover:border-navy/15 transition-all duration-300">
+              <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-navy/5 mb-3">
+                <UserCheck className="h-5 w-5 text-navy" />
+              </div>
+              <h3 className="font-semibold text-navy text-sm mb-1">
+                30 years&rsquo; experience
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Interviewing, search, selection, evaluation
+              </p>
+            </div>
+            <div className="rounded-xl border border-border/50 bg-background p-6 text-center hover:shadow-md hover:border-navy/15 transition-all duration-300">
+              <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-navy/5 mb-3">
+                <Layers className="h-5 w-5 text-navy" />
+              </div>
+              <h3 className="font-semibold text-navy text-sm mb-1">
+                Applied to your decision
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Not theoretical. Live judgement.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border/50 bg-background p-6 text-center hover:shadow-md hover:border-navy/15 transition-all duration-300">
+              <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-navy/5 mb-3">
+                <Microscope className="h-5 w-5 text-navy" />
+              </div>
+              <h3 className="font-semibold text-navy text-sm mb-1">
+                Optional psychological testing
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Through Piers Courage Morgan
+              </p>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── COMMERCIAL TERMS ─────────── */
+function CommercialSection() {
+  const terms = [
+    { label: 'Fee', value: 'Fixed fee agreed before engagement.', icon: <Scale className="h-5 w-5" /> },
+    { label: 'Timeframe', value: 'Most reviews are completed within 3\u20135 working days, depending on scope, candidate availability, interview scheduling, and whether optional psychological testing is included.', icon: <Clock className="h-5 w-5" /> },
+    { label: 'Designed for', value: 'Final-stage hiring decisions where candidates already exist.', icon: <Target className="h-5 w-5" /> },
+    { label: 'Psychological testing', value: 'Optional registered psychological testing is quoted separately where appropriate.', icon: <Microscope className="h-5 w-5" /> },
+  ]
+
+  return (
+    <section>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            Who conducts the review
+            Commercial terms
           </h2>
-        </div>
+        </FadeIn>
 
-        <div className="mt-8 max-w-3xl space-y-5 text-muted-foreground leading-relaxed">
-          <p>
-            Critical Hire is conducted by Optitude 360.
-          </p>
-          <p>
-            The review is led by 30 years&rsquo; experience of interviewing,
-            search, selection, and candidate judgement across senior and
-            business-critical appointments.
-          </p>
-          <p>
-            That experience is applied directly to the client&rsquo;s live
-            hiring decision: the role, the candidates, the interviews, the
-            evidence, the risks, and the final judgement before offer.
-          </p>
-          <p>
-            Where the appointment would benefit from additional psychological
-            evidence, Optitude 360 can include optional registered psychological
-            testing through specialist partner{' '}
-            <span className="font-medium text-foreground">
-              Piers Courage Morgan
-            </span>
-            .
-          </p>
-          <p>
-            This is used selectively. It is not generic psychometric testing and
-            it is not presented as a substitute for judgement. It is one
-            additional source of evidence where the role, risk, and decision
-            context justify it.
-          </p>
-        </div>
-
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="rounded-lg border border-border/60 bg-background p-5">
-            <UserCheck className="h-5 w-5 text-navy mb-2" />
-            <h3 className="font-semibold text-navy text-sm mb-1">
-              30 years&rsquo; experience
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Interviewing, search, selection, and candidate judgement.
-            </p>
-          </div>
-          <div className="rounded-lg border border-border/60 bg-background p-5">
-            <Layers className="h-5 w-5 text-navy mb-2" />
-            <h3 className="font-semibold text-navy text-sm mb-1">
-              Applied to your decision
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Not theoretical. Directly applied to the live hiring decision.
-            </p>
-          </div>
-          <div className="rounded-lg border border-border/60 bg-background p-5">
-            <Microscope className="h-5 w-5 text-navy mb-2" />
-            <h3 className="font-semibold text-navy text-sm mb-1">
-              Optional psychological testing
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Registered testing through Piers Courage Morgan where appropriate.
-            </p>
-          </div>
-        </div>
+        <StaggerContainer className="mt-10 grid sm:grid-cols-2 gap-5">
+          {terms.map((t) => (
+            <StaggerItem key={t.label}>
+              <div className="rounded-xl border border-border/50 bg-background p-6 hover:border-navy/15 hover:shadow-sm transition-all duration-300 h-full">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="text-navy/50">{t.icon}</div>
+                  <h3 className="font-semibold text-navy text-sm">{t.label}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t.value}</p>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
       </div>
     </section>
   )
@@ -691,126 +891,65 @@ function WhoConductsSection() {
 /* ─────────── DECISION CLARITY PROMISE ─────────── */
 function PromiseSection() {
   const promises = [
-    'What the appointment decision is really based on',
-    'What has been tested properly',
-    'What remains assumed',
+    'What your decision is really based on',
+    'What has been properly tested',
+    'What is still being assumed',
     'Where candidate confidence may be masking risk',
-    'Where stakeholders are aligned or misaligned',
-    'Whether the business is accepting risk knowingly or rationalising it under pressure',
-  ]
-
-  return (
-    <section>
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="mx-auto max-w-3xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-accent/10 border border-gold-accent/20 mb-6">
-            <ShieldCheck className="h-3.5 w-3.5 text-gold-accent" />
-            <span className="text-xs font-medium tracking-wide text-gold-accent">
-              Decision Clarity Promise
-            </span>
-          </div>
-
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            Critical Hire will not pretend to eliminate hiring risk.
-          </h2>
-
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            No serious adviser should promise that any appointment will succeed.
-            What we do guarantee is a clearer, more disciplined final decision.
-          </p>
-
-          <p className="mt-3 text-muted-foreground leading-relaxed">
-            It will help you see:
-          </p>
-
-          <ul className="mt-5 space-y-3">
-            {promises.map((p, i) => (
-              <li key={i} className="flex items-start gap-3 text-foreground">
-                <Eye className="h-4 w-4 mt-0.5 text-gold-accent shrink-0" />
-                <span className="leading-relaxed">{p}</span>
-              </li>
-            ))}
-          </ul>
-
-          <Separator className="my-8" />
-
-          <div className="rounded-lg border border-gold-accent/20 bg-gold-accent/5 p-6">
-            <p className="text-foreground leading-relaxed">
-              If the review does not give you a sharper understanding of the
-              role, the evidence, the risks, and the questions still worth
-              resolving before offer,{' '}
-              <span className="font-semibold text-navy">
-                we will complete an additional review session at no extra cost.
-              </span>
-            </p>
-          </div>
-
-          <p className="mt-5 text-sm text-muted-foreground leading-relaxed">
-            The outcome is a clearer, more disciplined final decision before the
-            offer is made.
-          </p>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─────────── WHAT CRITICAL HIRE IS NOT ─────────── */
-function NotSection() {
-  const distinctions = [
-    {
-      isNot: 'Not recruitment',
-      desc: 'We do not replace your recruiter or run the search process.',
-    },
-    {
-      isNot: 'Not HR replacement',
-      desc: 'We support internal decision-makers with independent judgement.',
-    },
-    {
-      isNot: 'Not generic psychometrics',
-      desc: 'Testing is optional and used only where it adds useful evidence.',
-    },
+    'Where stakeholders are aligned or divided',
+    'Whether the decision is being made on evidence, or under pressure to finish the process',
   ]
 
   return (
     <section className="bg-section-alt">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            What Critical Hire is not
-          </h2>
-        </div>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="mx-auto max-w-3xl">
+          <FadeIn>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-accent/10 border border-gold-accent/20 mb-6">
+              <ShieldCheck className="h-4 w-4 text-gold-accent" />
+              <span className="text-xs font-semibold tracking-wider uppercase text-gold-accent">
+                Decision Clarity Promise
+              </span>
+            </div>
+          </FadeIn>
 
-        <div className="mt-10 grid md:grid-cols-3 gap-6">
-          {distinctions.map((d) => (
-            <div
-              key={d.isNot}
-              className="rounded-lg border border-border/60 bg-background p-6"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <XCircle className="h-5 w-5 text-destructive/50" />
-                <h3 className="font-semibold text-foreground text-sm">
-                  {d.isNot}
-                </h3>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {d.desc}
+          <FadeIn delay={0.1}>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+              A clearer decision before you commit.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Critical Hire does not pretend to remove all hiring risk. No
+              serious selection adviser should promise that.
+            </p>
+            <p className="mt-2 text-muted-foreground leading-relaxed">
+              What we do provide is a clearer, more disciplined view of the
+              appointment before you make the offer.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.2}>
+            <p className="mt-6 text-foreground font-medium">You will understand:</p>
+            <ul className="mt-4 space-y-3">
+              {promises.map((p) => (
+                <li key={p} className="flex items-start gap-3 text-foreground">
+                  <Eye className="h-4 w-4 mt-0.5 text-gold-accent shrink-0" />
+                  <span className="leading-relaxed">{p}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+
+          <FadeIn delay={0.3}>
+            <div className="mt-10 rounded-xl border-2 border-gold-accent/20 bg-gold-accent/[0.04] p-6 md:p-8">
+              <p className="text-foreground leading-relaxed">
+                If the review does not give you a sharper understanding of the
+                role, the evidence, the candidate risk, and the questions still
+                worth resolving before offer,{' '}
+                <strong className="text-navy font-semibold">
+                  we will complete an additional review session at no extra cost.
+                </strong>
               </p>
             </div>
-          ))}
-        </div>
-
-        <div className="mt-8 rounded-lg bg-navy p-6 md:p-8 text-center">
-          <p className="text-sm font-medium tracking-widest uppercase text-white/40 mb-2">
-            It is
-          </p>
-          <p className="text-lg md:text-xl font-semibold text-white">
-            Final-stage selection support
-          </p>
-          <p className="text-sm text-white/60 mt-2 leading-relaxed max-w-lg mx-auto">
-            Practical judgement applied to a live hiring decision.
-          </p>
+          </FadeIn>
         </div>
       </div>
     </section>
@@ -819,46 +958,141 @@ function NotSection() {
 
 /* ─────────── DIAGNOSTIC CTA ─────────── */
 function DiagnosticSection() {
+  const useWhen = [
+    'You are close to making an offer',
+    'The role matters',
+    'The candidate looks strong',
+    'The consequences of getting it wrong would be serious',
+  ]
+
   return (
     <section id="diagnostic">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl mx-auto text-center">
-          <Brain className="h-10 w-10 text-navy mx-auto mb-6" />
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            Start with the Hiring Risk Diagnostic
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl mx-auto">
-            Not every role needs Critical Hire. The 8-question Hiring Risk
-            Diagnostic helps you judge whether the appointment carries enough
-            risk to justify an independent final-stage review.
-          </p>
-          <p className="mt-3 text-sm text-muted-foreground/70 max-w-lg mx-auto">
-            It is short, practical, and designed for business owners, MDs, HR
-            leaders, and hiring teams who are close to making a consequential
-            appointment.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 px-8 text-base border-navy/20 text-navy hover:bg-navy/5"
-              asChild
-            >
-              <a href="#diagnostic">
-                Take the 8-Question Diagnostic
-                <ChevronRight className="ml-1 h-4 w-4" />
-              </a>
-            </Button>
-            <Button
-              size="lg"
-              variant="ghost"
-              className="h-12 px-8 text-base text-muted-foreground"
-              asChild
-            >
-              <a href="#book">Or book a review directly</a>
-            </Button>
-          </div>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="max-w-3xl mx-auto">
+          <FadeIn>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-navy/5 mb-6">
+                <Brain className="h-7 w-7 text-navy" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+                Not sure whether the role needs a review?
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                Start with the{' '}
+                <strong className="text-foreground">8-question Hiring Risk Diagnostic</strong>.
+                It helps you judge whether the appointment is carrying enough risk
+                to justify independent final-stage selection support.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.15}>
+            <div className="mt-8">
+              <p className="text-sm font-medium text-navy mb-4">Use it when:</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {useWhen.map((u) => (
+                  <div key={u} className="flex items-center gap-3 rounded-lg bg-section-alt p-3.5">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-navy text-[10px] font-bold shrink-0">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="text-sm text-foreground">{u}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.25}>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
+                asChild
+              >
+                <a href="#diagnostic">
+                  Take the Hiring Risk Diagnostic
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                className="h-12 px-8 text-base bg-navy hover:bg-navy-light text-white shadow-sm transition-all duration-200"
+                asChild
+              >
+                <a href="#book">
+                  Book a Critical Hire Review
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          </FadeIn>
         </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─────────── WHAT IT IS NOT ─────────── */
+function NotSection() {
+  const notItems = [
+    {
+      isNot: 'Not recruitment',
+      desc: 'We do not replace your recruiter or run the candidate search.',
+      icon: <Search className="h-5 w-5" />,
+    },
+    {
+      isNot: 'Not HR replacement',
+      desc: 'We support internal decision-makers with independent judgement at the final stage.',
+      icon: <Users className="h-5 w-5" />,
+    },
+    {
+      isNot: 'Not generic psychometric testing',
+      desc: 'Psychological testing is optional and only used where it adds useful evidence.',
+      icon: <Microscope className="h-5 w-5" />,
+    },
+  ]
+
+  return (
+    <section className="bg-section-alt">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+            What Critical Hire is not
+          </h2>
+          <p className="mt-1 text-muted-foreground font-medium">Clear boundaries.</p>
+        </FadeIn>
+
+        <StaggerContainer className="mt-10 grid md:grid-cols-3 gap-5">
+          {notItems.map((d) => (
+            <StaggerItem key={d.isNot}>
+              <div className="rounded-xl border border-border/50 bg-background p-6 hover:border-destructive/15 hover:shadow-sm transition-all duration-300 h-full">
+                <div className="flex items-center gap-3 mb-3">
+                  <XCircle className="h-5 w-5 text-destructive/40" />
+                  <h3 className="font-semibold text-foreground text-sm">{d.isNot}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
+        <FadeIn delay={0.3}>
+          <div className="mt-8 rounded-xl bg-navy p-6 md:p-8 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy-light to-navy opacity-50" />
+            <div className="relative">
+              <p className="text-xs font-medium tracking-[0.15em] uppercase text-white/40 mb-2">
+                It is
+              </p>
+              <p className="text-lg md:text-xl font-semibold text-white">
+                Final-stage selection support
+              </p>
+              <p className="text-sm text-white/60 mt-2 max-w-md mx-auto leading-relaxed">
+                For businesses that already have candidates and want the decision tested before making the offer.
+              </p>
+            </div>
+          </div>
+        </FadeIn>
       </div>
     </section>
   )
@@ -868,82 +1102,72 @@ function DiagnosticSection() {
 function FAQSection() {
   const faqs = [
     {
-      q: 'Is Critical Hire recruitment?',
-      a: 'No. Critical Hire is for businesses that already have candidates. It does not replace your recruiter or run the search process. Your recruiter may help identify and introduce candidates. Critical Hire helps test the final selection decision before the offer is made. Search finds candidates. Critical Hire tests the decision.',
+      q: 'Is Critical Hire for us if we already have candidates?',
+      a: 'Yes. That is exactly when Critical Hire is most useful. It is designed for businesses that already have a shortlist or preferred candidate and want independent selection judgement before making the offer.',
     },
     {
-      q: 'Does Critical Hire replace HR?',
-      a: 'No. Critical Hire supports HR and hiring managers by adding independent selection judgement at the highest-risk point in the process. It can strengthen interview structure, evidence quality, stakeholder alignment, and decision discipline without bypassing internal ownership of the hire.',
+      q: 'Is this recruitment?',
+      a: 'No. Recruitment helps you find candidates. Critical Hire helps you test the final decision. It is used after candidates have been identified, when the business is close to making an appointment.',
     },
     {
-      q: 'Is this just psychometric testing?',
-      a: 'No. Critical Hire is broader than testing. It may include role calibration, interview design, candidate questioning, independent interviewing, evidence review, attitudinal-based selection, decision-risk analysis, and a written Decision Brief. Registered psychological testing is optional and provided through specialist partner Piers Courage Morgan where appropriate.',
+      q: 'Do you replace our HR team?',
+      a: 'No. Critical Hire supports HR, hiring managers, founders, MDs, and leadership teams by adding independent final-stage judgement. It strengthens the decision process without taking ownership away from the client.',
     },
     {
-      q: 'When should we use Critical Hire?',
-      a: 'Use it when you are close to making an offer and the role is too important to get wrong. It is particularly useful when the shortlist is strong, stakeholders disagree, doubts remain, the business is under pressure to decide, or the consequences of failure would be significant.',
-    },
-    {
-      q: 'What types of roles does this apply to?',
-      a: 'Critical Hire is not only for executives. It can apply to any role where failure would create serious commercial, operational, cultural, client, compliance, or leadership consequences. Examples include Operations Manager, Finance Manager, Sales Manager, Practice Manager, Technical Lead, Registered Manager, Production Manager, Head of People, Lab Manager, Quality Manager, and senior professional-services appointments.',
-    },
-    {
-      q: 'How long does it take?',
-      a: 'Most Critical Hire engagements are completed within 3\u20135 working days, depending on scope, candidate availability, interview requirements, and whether optional psychological testing is included.',
-    },
-    {
-      q: 'How is the fee agreed?',
-      a: 'Critical Hire is provided on a fixed-fee basis, agreed before engagement. The scope is defined at the start, based on the role, number of candidates, interview involvement, evidence review required, and any optional testing.',
-    },
-    {
-      q: 'Can you attend our final interviews?',
-      a: 'Yes, where appropriate. Optitude 360 can attend client interviews, ask independent questions, help structure the interview, or conduct candidate interviews on the client\u2019s behalf. This is agreed as part of the scope before engagement.',
+      q: 'Can you interview the candidates?',
+      a: 'Yes, where appropriate. Critical Hire may include attendance at client interviews, independent candidate questioning, or candidate interviews conducted on your behalf. This is agreed at the start of the engagement.',
     },
     {
       q: 'What if we only have one preferred candidate?',
-      a: 'Critical Hire can still be useful. A one-candidate review can test whether the decision is sufficiently evidenced, what remains unclear, and what risk the business would be accepting if it makes the offer.',
+      a: 'That can still be a good use of Critical Hire. A single-candidate review can test whether the decision is properly evidenced, what remains unclear, and what risk the business would be accepting by making the offer.',
     },
     {
-      q: 'Will you tell us who to hire?',
-      a: 'Critical Hire provides independent judgement, evidence review, risk analysis, and decision considerations. The final hiring decision remains with the client. The purpose is to improve the quality of that decision before the offer is made.',
+      q: 'Is psychological testing included?',
+      a: 'Psychological testing is optional. Where appropriate, registered psychological testing can be provided through specialist partner Piers Courage Morgan. It is used as an additional source of evidence, not as a standalone decision tool.',
     },
     {
-      q: 'What is the Hiring Risk Diagnostic?',
-      a: 'The Hiring Risk Diagnostic is an 8-question lead-in tool. It helps you judge whether a live appointment carries enough risk to justify a Critical Hire Review. It is not the service itself.',
+      q: 'How quickly can this be done?',
+      a: 'Most reviews can be completed within 3\u20135 working days, depending on the number of candidates, interview availability, scope, and whether optional psychological testing is included.',
     },
     {
-      q: 'What does a Critical Hire review cost?',
-      a: 'The review is a fixed-fee engagement based on the role and the number of candidates. Because it is designed for one to three final candidates, the scope is defined and the cost is agreed before you commit. Contact us for a specific quote.',
+      q: 'How much does it cost?',
+      a: 'Critical Hire is provided on a fixed-fee basis, agreed before engagement. The fee depends on scope, number of candidates, level of interview involvement, and whether optional psychological testing is required.',
+    },
+    {
+      q: 'Will you tell us whether to hire the candidate?',
+      a: 'We will give you a clear, independent view of the evidence, fit, risks, concerns, and decision considerations. The final hiring decision remains with you. The purpose is to help you make that decision with more confidence and less reliance on instinct.',
     },
   ]
 
   return (
-    <section className="bg-section-alt">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-        <div className="max-w-3xl">
+    <section>
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <FadeIn>
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
             Frequently asked questions
           </h2>
-        </div>
+        </FadeIn>
 
-        <div className="mt-10 max-w-3xl">
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, i) => (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="border-border/80"
-              >
-                <AccordionTrigger className="text-left text-sm md:text-base font-medium text-navy hover:no-underline hover:text-navy-light">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {faq.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="mt-10 max-w-3xl">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, i) => (
+                <AccordionItem
+                  key={i}
+                  value={`faq-${i}`}
+                  className="border-border/60"
+                >
+                  <AccordionTrigger className="text-left text-sm md:text-base font-medium text-navy hover:no-underline hover:text-navy-light transition-colors">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </FadeIn>
       </div>
     </section>
   )
@@ -952,44 +1176,47 @@ function FAQSection() {
 /* ─────────── FINAL CTA ─────────── */
 function FinalCTASection() {
   return (
-    <section id="book">
+    <section id="book" className="bg-section-alt">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-            Before you make the offer, test the decision.
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            If you already have candidates and the role is too important to get
-            wrong, Critical Hire gives you independent final-stage selection
-            support before you commit.
-          </p>
+        <FadeIn>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+              You have candidates. Now test the decision.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              If the role is too important to get wrong, do not rely on interview
+              confidence alone. Critical Hire gives you independent final-stage
+              selection support before you commit.
+            </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base"
-              asChild
-            >
-              <a href="#book">
-                Book a Critical Hire Review
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-12 px-8 text-base border-navy/20 text-navy hover:bg-navy/5"
-              asChild
-            >
-              <a href="#diagnostic">Take the Hiring Risk Diagnostic</a>
-            </Button>
+            <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                size="lg"
+                className="bg-navy hover:bg-navy-light text-white h-12 px-8 text-base shadow-md hover:shadow-lg transition-all duration-200"
+                asChild
+              >
+                <a href="#book">
+                  Book a Critical Hire Review
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
+                asChild
+              >
+                <a href="#diagnostic">Take the Hiring Risk Diagnostic</a>
+              </Button>
+            </div>
+
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs text-muted-foreground/60 justify-center">
+              <span>Fixed fee agreed before engagement</span>
+              <span className="hidden sm:inline text-muted-foreground/30">&bull;</span>
+              <span>Typical review timeframe: 3&ndash;5 working days</span>
+            </div>
           </div>
-
-          <p className="mt-6 text-xs text-muted-foreground/60">
-            Fixed fee agreed before engagement. Typical review timeframe:
-            3&ndash;5 working days.
-          </p>
-        </div>
+        </FadeIn>
       </div>
     </section>
   )
@@ -1008,8 +1235,8 @@ function Footer() {
                 Critical Hire
               </span>
             </div>
-            <p className="text-xs text-white/40">
-              by Optitude 360 &mdash; applying Executive Search Psychology to
+            <p className="text-xs text-white/40 max-w-sm leading-relaxed">
+              By Optitude 360 &mdash; applying Executive Search Psychology to
               business-critical hiring decisions.
             </p>
           </div>
@@ -1057,13 +1284,18 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
         <ProblemSection />
-        <WhenSection />
+        <AvoidSection />
+        <WhoSection />
         <HowSection />
         <IncludedSection />
+        <ReceiveSection />
+        <AttitudinalSection />
+        <PsychologicalSection />
         <WhoConductsSection />
+        <CommercialSection />
         <PromiseSection />
-        <NotSection />
         <DiagnosticSection />
+        <NotSection />
         <FAQSection />
         <FinalCTASection />
       </main>
