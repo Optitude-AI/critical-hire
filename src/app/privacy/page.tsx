@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "Privacy Policy for Critical Hire by Optitude 360. Learn how we collect, use, and protect your personal data when you use our final-stage selection support service.",
   alternates: {
-    canonical: "https://criticalhire.co.uk/privacy",
+    canonical: "https://criticalhire.optitude360.com/privacy",
   },
   openGraph: {
     title: "Privacy Policy | Critical Hire by Optitude 360",
     description: "Privacy Policy for Critical Hire by Optitude 360. Learn how we collect, use, and protect your personal data.",
-    url: "https://criticalhire.co.uk/privacy",
+    url: "https://criticalhire.optitude360.com/privacy",
     images: [{ url: "/og-image.png", width: 1344, height: 768, alt: "Critical Hire — Privacy Policy" }],
   },
 }
@@ -29,13 +29,13 @@ function BreadcrumbSchema() {
               '@type': 'ListItem',
               position: 1,
               name: 'Home',
-              item: 'https://criticalhire.co.uk',
+              item: 'https://criticalhire.optitude360.com',
             },
             {
               '@type': 'ListItem',
               position: 2,
               name: 'Privacy Policy',
-              item: 'https://criticalhire.co.uk/privacy',
+              item: 'https://criticalhire.optitude360.com/privacy',
             },
           ],
         }),

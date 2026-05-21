@@ -1,7 +1,7 @@
 export const dynamic = 'force-static'
 
 export default function sitemap() {
-  const baseUrl = 'https://criticalhire.co.uk'
+  const baseUrl = 'https://criticalhire.optitude360.com'
 
   return [
     {

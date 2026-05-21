@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/download', '/_next/'],
       },
     ],
-    sitemap: 'https://criticalhire.co.uk/sitemap.xml',
+    sitemap: 'https://criticalhire.optitude360.com/sitemap.xml',
   }
 }

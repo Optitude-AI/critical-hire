@@ -1639,11 +1639,11 @@ export default function Home() {
               '@graph': [
                 {
                   '@type': 'Organization',
-                  '@id': 'https://criticalhire.co.uk/#organization',
+                  '@id': 'https://criticalhire.optitude360.com/#organization',
                   name: 'Optitude Business Solutions Ltd',
                   alternateName: ['Optitude 360', 'Critical Hire'],
-                  url: 'https://criticalhire.co.uk',
-                  logo: 'https://criticalhire.co.uk/logo.svg',
+                  url: 'https://criticalhire.optitude360.com',
+                  logo: 'https://criticalhire.optitude360.com/logo.svg',
                   contactPoint: {
                     '@type': 'ContactPoint',
                     telephone: '+44-20-7183-7192',
@@ -1662,10 +1662,10 @@ export default function Home() {
                 },
                 {
                   '@type': 'Service',
-                  '@id': 'https://criticalhire.co.uk/#service',
+                  '@id': 'https://criticalhire.optitude360.com/#service',
                   name: 'Critical Hire',
                   description: 'Final-stage selection support for businesses making consequential hiring decisions. Independent review of role requirements, candidate evidence, interview findings, and decision risk before the offer is made.',
-                  provider: { '@id': 'https://criticalhire.co.uk/#organization' },
+                  provider: { '@id': 'https://criticalhire.optitude360.com/#organization' },
                   serviceType: 'Hiring Decision Support',
                   areaServed: { '@type': 'Country', name: 'United Kingdom' },
                   offers: {
@@ -1676,19 +1676,19 @@ export default function Home() {
                 },
                 {
                   '@type': 'WebPage',
-                  '@id': 'https://criticalhire.co.uk/#webpage',
-                  url: 'https://criticalhire.co.uk',
+                  '@id': 'https://criticalhire.optitude360.com/#webpage',
+                  url: 'https://criticalhire.optitude360.com',
                   name: 'Critical Hire | Final-Stage Selection Support Before You Make the Offer',
                   description: 'Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing.',
-                  isPartOf: { '@id': 'https://criticalhire.co.uk/#website' },
-                  about: { '@id': 'https://criticalhire.co.uk/#service' },
+                  isPartOf: { '@id': 'https://criticalhire.optitude360.com/#website' },
+                  about: { '@id': 'https://criticalhire.optitude360.com/#service' },
                 },
                 {
                   '@type': 'WebSite',
-                  '@id': 'https://criticalhire.co.uk/#website',
-                  url: 'https://criticalhire.co.uk',
+                  '@id': 'https://criticalhire.optitude360.com/#website',
+                  url: 'https://criticalhire.optitude360.com',
                   name: 'Critical Hire',
-                  publisher: { '@id': 'https://criticalhire.co.uk/#organization' },
+                  publisher: { '@id': 'https://criticalhire.optitude360.com/#organization' },
                 },
                 {
                   '@type': 'FAQPage',

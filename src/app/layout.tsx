@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://criticalhire.co.uk"),
+  metadataBase: new URL("https://criticalhire.optitude360.com"),
   title: {
     default: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     template: "%s | Critical Hire by Optitude 360",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "pre-offer hiring review",
     "SME hiring support UK",
   ],
-  authors: [{ name: "Optitude 360", url: "https://criticalhire.co.uk" }],
+  authors: [{ name: "Optitude 360", url: "https://criticalhire.optitude360.com" }],
   creator: "Optitude Business Solutions Ltd",
   publisher: "Optitude Business Solutions Ltd",
   robots: {
@@ -62,13 +62,13 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://criticalhire.co.uk",
+    canonical: "https://criticalhire.optitude360.com",
   },
   openGraph: {
     title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
       "Critical Hire gives businesses experienced, independent final-stage selection support before making an offer for a role too important to get wrong.",
-    url: "https://criticalhire.co.uk",
+    url: "https://criticalhire.optitude360.com",
     siteName: "Critical Hire by Optitude 360",
     locale: "en_GB",
     type: "website",

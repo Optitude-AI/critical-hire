@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Terms of Engagement",
   description: "Terms of Engagement for Critical Hire by Optitude 360. Understand the scope, fees, timeframe, confidentiality, and responsibilities for our final-stage selection support service.",
   alternates: {
-    canonical: "https://criticalhire.co.uk/terms",
+    canonical: "https://criticalhire.optitude360.com/terms",
   },
   openGraph: {
     title: "Terms of Engagement | Critical Hire by Optitude 360",
     description: "Terms of Engagement for Critical Hire by Optitude 360. Scope, fees, confidentiality, and responsibilities.",
-    url: "https://criticalhire.co.uk/terms",
+    url: "https://criticalhire.optitude360.com/terms",
     images: [{ url: "/og-image.png", width: 1344, height: 768, alt: "Critical Hire — Terms of Engagement" }],
   },
 }
@@ -29,13 +29,13 @@ function BreadcrumbSchema() {
               '@type': 'ListItem',
               position: 1,
               name: 'Home',
-              item: 'https://criticalhire.co.uk',
+              item: 'https://criticalhire.optitude360.com',
             },
             {
               '@type': 'ListItem',
               position: 2,
               name: 'Terms of Engagement',
-              item: 'https://criticalhire.co.uk/terms',
+              item: 'https://criticalhire.optitude360.com/terms',
             },
           ],
         }),
