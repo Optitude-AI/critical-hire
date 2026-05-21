@@ -1550,22 +1550,32 @@ function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/40">
-            <a href="#when" className="hover:text-white/70 transition-colors">
-              When to use
-            </a>
-            <a href="#how" className="hover:text-white/70 transition-colors">
-              How it works
-            </a>
-            <a href="#included" className="hover:text-white/70 transition-colors">
-              What&rsquo;s included
-            </a>
-            <a href="#diagnostic" className="hover:text-white/70 transition-colors">
-              Diagnostic
-            </a>
-            <a href="#book" className="hover:text-white/70 transition-colors">
-              Book review
-            </a>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/40">
+              <a href="#when" className="hover:text-white/70 transition-colors">
+                When to use
+              </a>
+              <a href="#how" className="hover:text-white/70 transition-colors">
+                How it works
+              </a>
+              <a href="#included" className="hover:text-white/70 transition-colors">
+                What&rsquo;s included
+              </a>
+              <a href="#diagnostic" className="hover:text-white/70 transition-colors">
+                Diagnostic
+              </a>
+              <a href="#book" className="hover:text-white/70 transition-colors">
+                Book review
+              </a>
+            </div>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-white/40">
+              <a href="mailto:simon.childs@optitude360.com" className="hover:text-white/70 transition-colors">
+                simon.childs@optitude360.com
+              </a>
+              <a href="tel:02071837192" className="hover:text-white/70 transition-colors">
+                020 7183 7192
+              </a>
+            </div>
           </div>
         </div>
 
