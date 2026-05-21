@@ -33,12 +33,9 @@ import {
   Layers,
   Microscope,
   TrendingDown,
-  Handshake,
   UserMinus,
   Gauge,
-  Zap,
   Fingerprint,
-  BookOpen,
 } from 'lucide-react'
 
 /* ─────────── ANIMATION HELPERS ─────────── */
@@ -956,77 +953,389 @@ function PromiseSection() {
   )
 }
 
-/* ─────────── DIAGNOSTIC CTA ─────────── */
-function DiagnosticSection() {
-  const useWhen = [
-    'You are close to making an offer',
-    'The role matters',
-    'The candidate looks strong',
-    'The consequences of getting it wrong would be serious',
-  ]
+/* ─────────── DIAGNOSTIC ─────────── */
+const diagnosticQuestions = [
+  {
+    id: 1,
+    question: 'How critical is this role to business performance, clients, or delivery?',
+    options: [
+      { label: 'Low — the role is important but not central', score: 0 },
+      { label: 'Moderate — poor performance would cause some disruption', score: 1 },
+      { label: 'High — the wrong person would significantly affect the business', score: 2 },
+    ],
+  },
+  {
+    id: 2,
+    question: 'How many candidates are you deciding between?',
+    options: [
+      { label: 'Three or more — we have a genuine choice', score: 0 },
+      { label: 'Two — it is between two candidates', score: 1 },
+      { label: 'One — we have a preferred candidate only', score: 2 },
+    ],
+  },
+  {
+    id: 3,
+    question: 'Do stakeholders agree on who should be appointed?',
+    options: [
+      { label: 'Yes — there is clear alignment', score: 0 },
+      { label: 'Mostly — but some doubts remain', score: 1 },
+      { label: 'No — stakeholders disagree or have different concerns', score: 2 },
+    ],
+  },
+  {
+    id: 4,
+    question: 'Has this role been filled before? If so, how did it go?',
+    options: [
+      { label: 'New role — no previous appointment', score: 0 },
+      { label: 'Filled before and it went well', score: 0 },
+      { label: 'Filled before and it did not work out', score: 2 },
+    ],
+  },
+  {
+    id: 5,
+    question: 'How much pressure is the business under to fill this vacancy quickly?',
+    options: [
+      { label: 'Low — we can take our time', score: 0 },
+      { label: 'Moderate — there is some urgency', score: 1 },
+      { label: 'High — the vacancy is causing real problems', score: 2 },
+    ],
+  },
+  {
+    id: 6,
+    question: 'Has the preferred candidate been tested beyond interview — for example, with scenarios, references, or practical assessment?',
+    options: [
+      { label: 'Yes — the evidence is reasonably thorough', score: 0 },
+      { label: 'Partly — some areas have been tested, some have not', score: 1 },
+      { label: 'No — the decision is largely based on interview performance', score: 2 },
+    ],
+  },
+  {
+    id: 7,
+    question: 'Are there any doubts or concerns about the preferred candidate that have been rationalised or set aside?',
+    options: [
+      { label: 'No — we are confident in the appointment', score: 0 },
+      { label: 'Minor concerns — but nothing that feels decisive', score: 1 },
+      { label: 'Yes — there are concerns we have not fully resolved', score: 2 },
+    ],
+  },
+  {
+    id: 8,
+    question: 'If this appointment does not work out, how difficult would it be to correct?',
+    options: [
+      { label: 'Manageable — we could adjust relatively quickly', score: 0 },
+      { label: 'Costly — it would take significant time and resource', score: 1 },
+      { label: 'Serious — it would damage clients, culture, compliance, or growth', score: 2 },
+    ],
+  },
+]
 
+function getResult(score: number): { level: string; colour: string; bg: string; border: string; summary: string; recommendation: string } {
+  if (score <= 4) {
+    return {
+      level: 'Lower Risk',
+      colour: 'text-green-dark',
+      bg: 'bg-green-dark/5',
+      border: 'border-green-dark/20',
+      summary: 'Based on your answers, this appointment carries a lower level of risk. The evidence appears reasonably strong and the decision context is manageable.',
+      recommendation: 'A Critical Hire Review may still add value, but the urgency is lower. If you would like reassurance before the offer, you can book a review at any time.',
+    }
+  }
+  if (score <= 10) {
+    return {
+      level: 'Moderate Risk',
+      colour: 'text-gold-accent',
+      bg: 'bg-gold-accent/5',
+      border: 'border-gold-accent/20',
+      summary: 'Based on your answers, this appointment carries moderate risk. There are areas where the evidence is incomplete, pressure is building, or concerns have not been fully tested.',
+      recommendation: 'A Critical Hire Review would strengthen the decision before the offer is made. We recommend booking a review before committing.',
+    }
+  }
+  return {
+    level: 'High Risk',
+    colour: 'text-destructive',
+    bg: 'bg-destructive/5',
+    border: 'border-destructive/20',
+    summary: 'Based on your answers, this appointment carries significant risk. The evidence base may be thin, pressure is high, stakeholders may not be aligned, and the consequences of a poor hire would be serious.',
+    recommendation: 'We strongly recommend a Critical Hire Review before making the offer. Book a review now to test the decision before you commit.',
+  }
+}
+
+function DiagnosticSection() {
+  const [started, setStarted] = useState(false)
+  const [currentQ, setCurrentQ] = useState(0)
+  const [answers, setAnswers] = useState<Record<number, number>>({})
+  const [showResult, setShowResult] = useState(false)
+
+  const totalScore = Object.values(answers).reduce((sum, s) => sum + s, 0)
+  const result = getResult(totalScore)
+  const answeredCount = Object.keys(answers).length
+
+  function handleAnswer(score: number) {
+    const q = diagnosticQuestions[currentQ]
+    setAnswers({ ...answers, [q.id]: score })
+    if (currentQ < diagnosticQuestions.length - 1) {
+      setCurrentQ(currentQ + 1)
+    } else {
+      setShowResult(true)
+    }
+  }
+
+  function handleBack() {
+    if (currentQ > 0) {
+      setCurrentQ(currentQ - 1)
+    }
+  }
+
+  function handleReset() {
+    setStarted(false)
+    setCurrentQ(0)
+    setAnswers({})
+    setShowResult(false)
+  }
+
+  // Intro state
+  if (!started) {
+    const useWhen = [
+      'You are close to making an offer',
+      'The role matters',
+      'The candidate looks strong',
+      'The consequences of getting it wrong would be serious',
+    ]
+
+    return (
+      <section id="diagnostic">
+        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <div className="max-w-3xl mx-auto">
+            <FadeIn>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-navy/5 mb-6">
+                  <Brain className="h-7 w-7 text-navy" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
+                  Not sure whether the role needs a review?
+                </h2>
+                <p className="mt-4 text-muted-foreground leading-relaxed">
+                  Start with the{' '}
+                  <strong className="text-foreground">8-question Hiring Risk Diagnostic</strong>.
+                  It helps you judge whether the appointment is carrying enough risk
+                  to justify independent final-stage selection support.
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <div className="mt-8">
+                <p className="text-sm font-medium text-navy mb-4">Use it when:</p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {useWhen.map((u) => (
+                    <div key={u} className="flex items-center gap-3 rounded-lg bg-section-alt p-3.5">
+                      <CheckCircle2 className="h-4 w-4 text-navy/50 shrink-0" />
+                      <span className="text-sm text-foreground">{u}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.25}>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  size="lg"
+                  className="h-12 px-8 text-base bg-navy hover:bg-navy-light text-white shadow-sm transition-all duration-200"
+                  onClick={() => setStarted(true)}
+                >
+                  Take the 8-Question Diagnostic
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
+                  asChild
+                >
+                  <a href="#book">
+                    Book a Critical Hire Review
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </Button>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Question state
+  if (!showResult) {
+    const q = diagnosticQuestions[currentQ]
+    const progress = ((currentQ) / diagnosticQuestions.length) * 100
+
+    return (
+      <section id="diagnostic">
+        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <div className="max-w-2xl mx-auto">
+            {/* Progress bar */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                <span>Question {currentQ + 1} of {diagnosticQuestions.length}</span>
+                <span>{Math.round(progress)}% complete</span>
+              </div>
+              <div className="h-1.5 bg-border/50 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-navy rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                />
+              </div>
+            </div>
+
+            {/* Question */}
+            <motion.div
+              key={q.id}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-lg md:text-xl font-semibold text-navy mb-6 leading-snug">
+                {q.question}
+              </h3>
+
+              <div className="space-y-3">
+                {q.options.map((opt, i) => {
+                  const isSelected = answers[q.id] === opt.score
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => handleAnswer(opt.score)}
+                      className={`w-full text-left rounded-xl border p-4 transition-all duration-200 cursor-pointer group ${
+                        isSelected
+                          ? 'border-navy bg-navy/5 shadow-sm'
+                          : 'border-border/50 bg-background hover:border-navy/20 hover:shadow-sm'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 mt-0.5 transition-colors duration-200 ${
+                          isSelected
+                            ? 'border-navy bg-navy text-white'
+                            : 'border-border group-hover:border-navy/40'
+                        }`}>
+                          {isSelected && <CheckCircle2 className="h-3.5 w-3.5" />}
+                        </div>
+                        <span className={`text-sm leading-relaxed ${isSelected ? 'text-navy font-medium' : 'text-foreground'}`}>
+                          {opt.label}
+                        </span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </motion.div>
+
+            {/* Navigation */}
+            <div className="mt-6 flex items-center justify-between">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleBack}
+                disabled={currentQ === 0}
+                className="text-muted-foreground"
+              >
+                Back
+              </Button>
+              <button
+                onClick={handleReset}
+                className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+              >
+                Start over
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Result state
   return (
     <section id="diagnostic">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
-        <div className="max-w-3xl mx-auto">
-          <FadeIn>
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-navy/5 mb-6">
-                <Brain className="h-7 w-7 text-navy" />
+        <div className="max-w-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Result header */}
+            <div className="text-center mb-8">
+              <div className={`inline-flex items-center justify-center h-16 w-16 rounded-2xl ${result.bg} mb-4`}>
+                <Gauge className={`h-8 w-8 ${result.colour}`} />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-navy">
-                Not sure whether the role needs a review?
+                Your result: {result.level}
               </h2>
-              <p className="mt-4 text-muted-foreground leading-relaxed">
-                Start with the{' '}
-                <strong className="text-foreground">8-question Hiring Risk Diagnostic</strong>.
-                It helps you judge whether the appointment is carrying enough risk
-                to justify independent final-stage selection support.
+              <p className="mt-2 text-sm text-muted-foreground">
+                Score: {totalScore} out of 16
               </p>
             </div>
-          </FadeIn>
 
-          <FadeIn delay={0.15}>
-            <div className="mt-8">
-              <p className="text-sm font-medium text-navy mb-4">Use it when:</p>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {useWhen.map((u) => (
-                  <div key={u} className="flex items-center gap-3 rounded-lg bg-section-alt p-3.5">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-navy text-[10px] font-bold shrink-0">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <span className="text-sm text-foreground">{u}</span>
-                  </div>
-                ))}
+            {/* Score breakdown bar */}
+            <div className="mb-8">
+              <div className="h-2 bg-border/30 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${
+                    totalScore <= 4 ? 'bg-green-dark' : totalScore <= 10 ? 'bg-gold-accent' : 'bg-destructive'
+                  }`}
+                  style={{ width: `${(totalScore / 16) * 100}%` }}
+                />
+              </div>
+              <div className="flex justify-between mt-1.5 text-[10px] text-muted-foreground/50">
+                <span>Lower risk</span>
+                <span>Moderate risk</span>
+                <span>High risk</span>
               </div>
             </div>
-          </FadeIn>
 
-          <FadeIn delay={0.25}>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            {/* Summary */}
+            <div className={`rounded-xl border-2 ${result.border} ${result.bg} p-6 mb-6`}>
+              <p className="text-foreground leading-relaxed">
+                {result.summary}
+              </p>
+            </div>
+
+            {/* Recommendation */}
+            <div className="rounded-xl border border-border/50 bg-background p-6 mb-8">
+              <p className="text-sm font-medium text-navy mb-2">Recommendation</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {result.recommendation}
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {(totalScore > 4) && (
+                <Button
+                  size="lg"
+                  className="h-12 px-8 text-base bg-navy hover:bg-navy-light text-white shadow-md hover:shadow-lg transition-all duration-200"
+                  asChild
+                >
+                  <a href="#book">
+                    Book a Critical Hire Review
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </Button>
+              )}
               <Button
                 size="lg"
                 variant="outline"
                 className="h-12 px-8 text-base border-navy/15 text-navy hover:bg-navy/5 hover:border-navy/30 transition-all duration-200"
-                asChild
+                onClick={handleReset}
               >
-                <a href="#diagnostic">
-                  Take the Hiring Risk Diagnostic
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                className="h-12 px-8 text-base bg-navy hover:bg-navy-light text-white shadow-sm transition-all duration-200"
-                asChild
-              >
-                <a href="#book">
-                  Book a Critical Hire Review
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+                Retake the Diagnostic
               </Button>
             </div>
-          </FadeIn>
+          </motion.div>
         </div>
       </div>
     </section>
