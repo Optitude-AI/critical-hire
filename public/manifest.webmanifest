@@ -1,0 +1,26 @@
+{
+  "name": "Critical Hire — Final-Stage Selection Support",
+  "short_name": "Critical Hire",
+  "description": "Experienced, independent final-stage selection support before making an offer for a role too important to get wrong.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1B2A4A",
+  "orientation": "portrait-primary",
+  "lang": "en-GB",
+  "categories": ["business", "professional-services"],
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "1344x768",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -42,6 +42,10 @@ export const metadata: Metadata = {
     "Talent Praxis Group",
     "independent selection judgement",
     "decision brief",
+    "consequential hire",
+    "hire review service",
+    "pre-offer hiring review",
+    "SME hiring support UK",
   ],
   authors: [{ name: "Optitude 360", url: "https://criticalhire.co.uk" }],
   creator: "Optitude Business Solutions Ltd",
@@ -68,14 +72,41 @@ export const metadata: Metadata = {
     siteName: "Critical Hire by Optitude 360",
     locale: "en_GB",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1344,
+        height: 768,
+        alt: "Critical Hire — Final-Stage Selection Support by Optitude 360",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
       "Critical Hire gives businesses experienced, independent final-stage selection support before making an offer for a role too important to get wrong.",
+    images: ["/og-image.png"],
   },
   category: "business",
+  classification: "Hiring Decision Support",
+  other: {
+    "application-name": "Critical Hire",
+    "apple-mobile-web-app-title": "Critical Hire",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
+    "mobile-web-app-capable": "yes",
+    "theme-color": "#1B2A4A",
+    "format-detection": "telephone=yes",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
@@ -86,13 +117,15 @@ export default function RootLayout({
   return (
     <html lang="en-GB" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#1B2A4A" />
+        <link rel="dns-prefetch" href="https://lunacal.ai" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white focus:text-sm">
+          Skip to main content
+        </a>
         {children}
         <Toaster />
       </body>

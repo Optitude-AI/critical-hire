@@ -282,11 +282,11 @@ function HeroSection() {
 /* ─────────── PROBLEM ─────────── */
 function ProblemSection() {
   return (
-    <section id="problem" className="bg-section-alt relative">
+    <section id="problem" aria-labelledby="problem-heading" className="bg-section-alt relative">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <div className="max-w-3xl">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+            <h2 id="problem-heading" className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
               When the candidate looks good, but the decision still matters
             </h2>
           </FadeIn>
@@ -408,10 +408,10 @@ function WhoSection() {
   ]
 
   return (
-    <section id="when" className="bg-section-alt">
+    <section id="when" aria-labelledby="when-heading" className="bg-section-alt">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <FadeIn>
-          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+          <h2 id="when-heading" className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
             Who this is for
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">
@@ -515,10 +515,10 @@ function HowSection() {
   ]
 
   return (
-    <section id="how">
+    <section id="how" aria-labelledby="how-heading">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <FadeIn>
-          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+          <h2 id="how-heading" className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
             How Critical Hire works
           </h2>
         </FadeIn>
@@ -585,10 +585,10 @@ function IncludedSection() {
   ]
 
   return (
-    <section id="included" className="bg-section-alt">
+    <section id="included" aria-labelledby="included-heading" className="bg-section-alt">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <FadeIn>
-          <h2 className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
+          <h2 id="included-heading" className="text-2xl md:text-3xl lg:text-[2.1rem] font-bold tracking-tight text-navy leading-snug">
             What may be included
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">
@@ -1583,10 +1583,10 @@ function Footer() {
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/40">
-            <a href="/critical-hire/privacy" className="hover:text-white/70 transition-colors">
+            <a href="/privacy" className="hover:text-white/70 transition-colors">
               Privacy Policy
             </a>
-            <a href="/critical-hire/terms" className="hover:text-white/70 transition-colors">
+            <a href="/terms" className="hover:text-white/70 transition-colors">
               Terms of Engagement
             </a>
           </div>
@@ -1614,7 +1614,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <HeroSection />
         <ProblemSection />
         <AvoidSection />

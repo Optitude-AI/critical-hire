@@ -12,12 +12,42 @@ export const metadata: Metadata = {
     title: "Terms of Engagement | Critical Hire by Optitude 360",
     description: "Terms of Engagement for Critical Hire by Optitude 360. Scope, fees, confidentiality, and responsibilities.",
     url: "https://criticalhire.co.uk/terms",
+    images: [{ url: "/og-image.png", width: 1344, height: 768, alt: "Critical Hire — Terms of Engagement" }],
   },
+}
+
+function BreadcrumbSchema() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://criticalhire.co.uk',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Terms of Engagement',
+              item: 'https://criticalhire.co.uk/terms',
+            },
+          ],
+        }),
+      }}
+    />
+  )
 }
 
 export default function TermsOfEngagement() {
   return (
     <div className="min-h-screen bg-background">
+      <BreadcrumbSchema />
       <div className="border-b border-border bg-navy-dark">
         <div className="mx-auto max-w-4xl px-6 py-10">
           <div className="flex items-center gap-3 mb-4">

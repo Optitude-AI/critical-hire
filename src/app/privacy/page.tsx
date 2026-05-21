@@ -12,12 +12,42 @@ export const metadata: Metadata = {
     title: "Privacy Policy | Critical Hire by Optitude 360",
     description: "Privacy Policy for Critical Hire by Optitude 360. Learn how we collect, use, and protect your personal data.",
     url: "https://criticalhire.co.uk/privacy",
+    images: [{ url: "/og-image.png", width: 1344, height: 768, alt: "Critical Hire — Privacy Policy" }],
   },
+}
+
+function BreadcrumbSchema() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://criticalhire.co.uk',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Privacy Policy',
+              item: 'https://criticalhire.co.uk/privacy',
+            },
+          ],
+        }),
+      }}
+    />
+  )
 }
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
+      <BreadcrumbSchema />
       <div className="border-b border-border bg-navy-dark">
         <div className="mx-auto max-w-4xl px-6 py-10">
           <div className="flex items-center gap-3 mb-4">
