@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "UK SME hiring",
     "Optitude 360",
     "Executive Search Psychology",
-    "Piers Courage Morgan",
+    "Talent Praxis",
   ],
   authors: [{ name: "Optitude 360" }],
   openGraph: {

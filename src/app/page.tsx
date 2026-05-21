@@ -584,7 +584,7 @@ function IncludedSection() {
     'Offer/no-offer considerations',
     'Critical Hire Decision Brief',
     'Optional 30/60/90-day early-risk watchpoints',
-    'Optional registered psychological testing through specialist partner Piers Courage Morgan',
+    'Optional registered psychological testing through specialist partner Talent Praxis',
   ]
 
   return (
@@ -753,7 +753,7 @@ function PsychologicalSection() {
               <p>
                 Where deeper assessment is appropriate, registered psychological
                 testing can be provided through specialist partner{' '}
-                <strong className="text-foreground">Piers Courage Morgan</strong>.
+                <strong className="text-foreground">Talent Praxis</strong>.
               </p>
               <p>
                 Testing is used selectively. It is not generic psychometric
@@ -801,7 +801,7 @@ function WhoConductsSection() {
             <p>
               Where useful, optional registered psychological testing can be
               provided through specialist partner{' '}
-              <strong className="text-foreground">Piers Courage Morgan</strong>.
+              <strong className="text-foreground">Talent Praxis</strong>.
             </p>
             <p>
               Testing is used selectively. It is an additional source of
@@ -842,7 +842,7 @@ function WhoConductsSection() {
                 Optional psychological testing
               </h3>
               <p className="text-xs text-muted-foreground">
-                Through Piers Courage Morgan
+                Through Talent Praxis
               </p>
             </div>
           </div>
@@ -1123,7 +1123,7 @@ function FAQSection() {
     },
     {
       q: 'Is psychological testing included?',
-      a: 'Psychological testing is optional. Where appropriate, registered psychological testing can be provided through specialist partner Piers Courage Morgan. It is used as an additional source of evidence, not as a standalone decision tool.',
+      a: 'Psychological testing is optional. Where appropriate, registered psychological testing can be provided through specialist partner Talent Praxis. It is used as an additional source of evidence, not as a standalone decision tool.',
     },
     {
       q: 'How quickly can this be done?',
