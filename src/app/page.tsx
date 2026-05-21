@@ -97,7 +97,7 @@ function Navigation() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
+    <header aria-label="Site navigation" className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
       <nav className="mx-auto max-w-6xl flex items-center justify-between px-6 py-3">
         <a href="#" className="flex items-center gap-2.5 group">
           <div className="h-9 w-9 rounded-lg bg-navy flex items-center justify-center shadow-sm">
@@ -1534,7 +1534,7 @@ function FinalCTASection() {
 /* ─────────── FOOTER ─────────── */
 function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-navy-dark text-white/60">
+    <footer aria-label="Site footer" className="mt-auto border-t border-border bg-navy-dark text-white/60">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
@@ -1631,6 +1631,146 @@ export default function Home() {
         <NotSection />
         <FAQSection />
         <FinalCTASection />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': 'https://criticalhire.co.uk/#organization',
+                  name: 'Optitude Business Solutions Ltd',
+                  alternateName: ['Optitude 360', 'Critical Hire'],
+                  url: 'https://criticalhire.co.uk',
+                  logo: 'https://criticalhire.co.uk/logo.svg',
+                  contactPoint: {
+                    '@type': 'ContactPoint',
+                    telephone: '+44-20-7183-7192',
+                    contactType: 'customer service',
+                    email: 'simon.childs@optitude360.com',
+                    areaServed: 'GB',
+                  },
+                  address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: '124-128 City Road',
+                    addressLocality: 'London',
+                    addressCountry: 'GB',
+                    postalCode: 'EC1V 2NX',
+                  },
+                  sameAs: [],
+                },
+                {
+                  '@type': 'Service',
+                  '@id': 'https://criticalhire.co.uk/#service',
+                  name: 'Critical Hire',
+                  description: 'Final-stage selection support for businesses making consequential hiring decisions. Independent review of role requirements, candidate evidence, interview findings, and decision risk before the offer is made.',
+                  provider: { '@id': 'https://criticalhire.co.uk/#organization' },
+                  serviceType: 'Hiring Decision Support',
+                  areaServed: { '@type': 'Country', name: 'United Kingdom' },
+                  offers: {
+                    '@type': 'Offer',
+                    priceCurrency: 'GBP',
+                    description: 'Fixed fee agreed before engagement',
+                  },
+                },
+                {
+                  '@type': 'WebPage',
+                  '@id': 'https://criticalhire.co.uk/#webpage',
+                  url: 'https://criticalhire.co.uk',
+                  name: 'Critical Hire | Final-Stage Selection Support Before You Make the Offer',
+                  description: 'Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing.',
+                  isPartOf: { '@id': 'https://criticalhire.co.uk/#website' },
+                  about: { '@id': 'https://criticalhire.co.uk/#service' },
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': 'https://criticalhire.co.uk/#website',
+                  url: 'https://criticalhire.co.uk',
+                  name: 'Critical Hire',
+                  publisher: { '@id': 'https://criticalhire.co.uk/#organization' },
+                },
+                {
+                  '@type': 'FAQPage',
+                  mainEntity: [
+                    {
+                      '@type': 'Question',
+                      name: 'Is Critical Hire for us if we already have candidates?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Yes. That is exactly when Critical Hire is most useful. It is designed for businesses that already have a shortlist or preferred candidate and want independent selection judgement before making the offer.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Is this recruitment?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'No. Recruitment helps you find candidates. Critical Hire helps you test the final decision. It is used after candidates have been identified, when the business is close to making an appointment.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Do you replace our HR team?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'No. Critical Hire supports HR, hiring managers, founders, MDs, and leadership teams by adding independent final-stage judgement. It strengthens the decision process without taking ownership away from the client.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Can you interview the candidates?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Yes, where appropriate. Critical Hire may include attendance at client interviews, independent candidate questioning, or candidate interviews conducted on your behalf. This is agreed at the start of the engagement.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'What if we only have one preferred candidate?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'That can still be a good use of Critical Hire. A single-candidate review can test whether the decision is properly evidenced, what remains unclear, and what risk the business would be accepting by making the offer.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Is psychological testing included?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Psychological testing is optional. Where appropriate, registered psychological testing can be provided through specialist partner Talent Praxis Group. It is used as an additional source of evidence, not as a standalone decision tool.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'How quickly can this be done?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Most reviews can be completed within 3–5 working days, depending on the number of candidates, interview availability, scope, and whether optional psychological testing is included.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'How much does it cost?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'Critical Hire is provided on a fixed-fee basis, agreed before engagement. The fee depends on scope, number of candidates, level of interview involvement, and whether optional psychological testing is required.',
+                      },
+                    },
+                    {
+                      '@type': 'Question',
+                      name: 'Will you tell us whether to hire the candidate?',
+                      acceptedAnswer: {
+                        '@type': 'Answer',
+                        text: 'We will give you a clear, independent view of the evidence, fit, risks, concerns, and decision considerations. The final hiring decision remains with you. The purpose is to help you make that decision with more confidence and less reliance on instinct.',
+                      },
+                    },
+                  ],
+                },
+              ],
+            }),
+          }}
+        />
       </main>
       <Footer />
     </div>

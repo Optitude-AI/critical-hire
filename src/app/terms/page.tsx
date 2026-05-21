@@ -1,7 +1,19 @@
-'use client'
-
 import { FileCheck } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Terms of Engagement",
+  description: "Terms of Engagement for Critical Hire by Optitude 360. Understand the scope, fees, timeframe, confidentiality, and responsibilities for our final-stage selection support service.",
+  alternates: {
+    canonical: "https://criticalhire.co.uk/terms",
+  },
+  openGraph: {
+    title: "Terms of Engagement | Critical Hire by Optitude 360",
+    description: "Terms of Engagement for Critical Hire by Optitude 360. Scope, fees, confidentiality, and responsibilities.",
+    url: "https://criticalhire.co.uk/terms",
+  },
+}
 
 export default function TermsOfEngagement() {
   return (
@@ -21,7 +33,7 @@ export default function TermsOfEngagement() {
       </div>
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="prose prose-slate max-w-none space-y-8 text-muted-foreground leading-relaxed">
+        <article className="prose prose-slate max-w-none space-y-8 text-muted-foreground leading-relaxed">
           <section>
             <h2 className="text-lg font-semibold text-navy mb-3">1. The service</h2>
             <p>
@@ -169,11 +181,11 @@ export default function TermsOfEngagement() {
               <p>Phone: 020 7183 7192</p>
             </div>
           </section>
-        </div>
+        </article>
 
         <div className="mt-12 pt-6 border-t border-border">
           <Link
-            href="/critical-hire"
+            href="/"
             className="text-sm text-navy hover:text-navy/70 underline"
           >
             &larr; Back to Critical Hire

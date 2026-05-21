@@ -1,29 +1,12 @@
-'use client'
+import type { Metadata } from 'next'
 
-import { useEffect, useState } from 'react'
+export const metadata: Metadata = {
+  title: "Download Static Files",
+  description: "Download the Critical Hire static site files for self-hosted deployment.",
+  robots: { index: false, follow: true },
+}
 
 export default function DownloadPage() {
-  const [loading, setLoading] = useState(false)
-
-  const handleDownload = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch('/critical-hire/critical-hire-static.zip')
-      const blob = await response.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'critical-hire-static.zip'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    } catch (e) {
-      alert('Download failed. Please try the direct link below.')
-    }
-    setLoading(false)
-  }
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -59,12 +42,13 @@ export default function DownloadPage() {
           Critical Hire — Static Files
         </h1>
         <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '32px', lineHeight: '1.5' }}>
-          Download the static site files (496KB zip). Upload and extract in your Plesk /critical-hire/ directory.
+          Download the static site files. Upload and extract in your hosting directory.
         </p>
-        <button
-          onClick={handleDownload}
-          disabled={loading}
+        <a
+          href="/critical-hire-static.zip"
+          download="critical-hire-static.zip"
           style={{
+            display: 'block',
             width: '100%',
             padding: '14px 24px',
             background: '#1e293b',
@@ -73,15 +57,15 @@ export default function DownloadPage() {
             borderRadius: '8px',
             fontSize: '16px',
             fontWeight: '600',
-            cursor: loading ? 'wait' : 'pointer',
-            opacity: loading ? 0.7 : 1,
+            textDecoration: 'none',
+            textAlign: 'center',
             marginBottom: '16px'
           }}
         >
-          {loading ? 'Downloading...' : 'Download critical-hire-static.zip'}
-        </button>
+          Download critical-hire-static.zip
+        </a>
         <p style={{ fontSize: '12px', color: '#94a3b8' }}>
-          or <a href="/critical-hire/critical-hire-static.zip" style={{ color: '#1e293b', textDecoration: 'underline' }}>click here for direct download</a>
+          <a href="/" style={{ color: '#1e293b', textDecoration: 'underline' }}>&larr; Back to Critical Hire</a>
         </p>
       </div>
     </div>

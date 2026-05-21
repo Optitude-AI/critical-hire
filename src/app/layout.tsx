@@ -14,12 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
+  metadataBase: new URL("https://criticalhire.co.uk"),
+  title: {
+    default: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
+    template: "%s | Critical Hire by Optitude 360",
+  },
   description:
-    "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing to a consequential hire.",
+    "Critical Hire gives businesses experienced, independent final-stage selection support before making an offer for a role too important to get wrong. Test the role, candidates, evidence, and decision risk before you commit.",
   keywords: [
     "critical hire",
-    "hiring risk",
+    "hiring risk assessment",
     "final-stage hiring decision",
     "business-critical appointment",
     "reduce hiring risk",
@@ -28,26 +32,50 @@ export const metadata: Metadata = {
     "selection support",
     "final-stage selection",
     "pre-offer review",
+    "candidate risk assessment",
+    "attitudinal-based selection",
+    "hiring risk diagnostic",
     "Cambridgeshire business",
     "UK SME hiring",
     "Optitude 360",
     "Executive Search Psychology",
     "Talent Praxis Group",
+    "independent selection judgement",
+    "decision brief",
   ],
-  authors: [{ name: "Optitude 360" }],
+  authors: [{ name: "Optitude 360", url: "https://criticalhire.co.uk" }],
+  creator: "Optitude Business Solutions Ltd",
+  publisher: "Optitude Business Solutions Ltd",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://criticalhire.co.uk",
+  },
   openGraph: {
     title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
-      "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, interview findings, and decision risk before committing.",
-    type: "website",
+      "Critical Hire gives businesses experienced, independent final-stage selection support before making an offer for a role too important to get wrong.",
+    url: "https://criticalhire.co.uk",
     siteName: "Critical Hire by Optitude 360",
+    locale: "en_GB",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Critical Hire | Final-Stage Selection Support Before You Make the Offer",
     description:
-      "Critical Hire helps businesses with final-stage selection support before making an offer. Test the role, candidates, evidence, and decision risk before committing.",
+      "Critical Hire gives businesses experienced, independent final-stage selection support before making an offer for a role too important to get wrong.",
   },
+  category: "business",
 };
 
 export default function RootLayout({
@@ -57,6 +85,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#1B2A4A" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

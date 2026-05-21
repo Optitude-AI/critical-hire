@@ -122,3 +122,30 @@ Stage Summary:
 - All "Book a Review" / "Book a Critical Hire Review" buttons now link to https://lunacal.ai/optitude-group (opens in new tab)
 - Production deployment live at: https://my-project-mu-green.vercel.app
 - Lint passes clean
+
+---
+Task ID: 6
+Agent: SEO Agent
+Task: Add comprehensive SEO structured data (JSON-LD) and semantic improvements to the Critical Hire website
+
+Work Log:
+- Added JSON-LD structured data via `<script type="application/ld+json">` with `dangerouslySetInnerHTML` in the Home component, placed at end of `<main>` just before closing tag
+- JSON-LD contains a single `@graph` array with 5 schemas: Organization, Service, WebPage, WebSite, FAQPage
+- Organization schema: Optitude Business Solutions Ltd with alternate names, logo, contact point (phone, email, areaServed), postal address (124-128 City Road, London, EC1V 2NX), sameAs
+- Service schema: Critical Hire with description, provider reference, serviceType "Hiring Decision Support", areaServed UK, offer with GBP currency and fixed fee description
+- WebPage schema: with full page title, description, isPartOf and about references
+- WebSite schema: with name and publisher reference
+- FAQPage schema: all 9 FAQ questions and answers extracted from FAQSection component, matching exactly
+- Added `aria-label="Site navigation"` to the `<header>` element in Navigation component
+- Added `aria-label="Site footer"` to the `<footer>` element in Footer component
+- Verified only one `<h1>` tag exists on the page (hero heading "You have candidates. Now test the decision.")
+- Verified page already wrapped in `<main>` tag and uses `<section>` tags throughout
+- No visual styling, copy text, or component structure was changed
+- Lint passes clean with zero errors
+
+Stage Summary:
+- Added comprehensive JSON-LD structured data with 5 interconnected schema types (Organization, Service, WebPage, WebSite, FAQPage) in a single @graph
+- Added semantic HTML improvements: aria-label on header and footer
+- Verified single h1, existing main wrapper, existing section usage
+- No visual or copy changes made
+- Lint passes clean

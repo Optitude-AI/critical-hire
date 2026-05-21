@@ -1,7 +1,19 @@
-'use client'
-
 import { ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Privacy Policy for Critical Hire by Optitude 360. Learn how we collect, use, and protect your personal data when you use our final-stage selection support service.",
+  alternates: {
+    canonical: "https://criticalhire.co.uk/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | Critical Hire by Optitude 360",
+    description: "Privacy Policy for Critical Hire by Optitude 360. Learn how we collect, use, and protect your personal data.",
+    url: "https://criticalhire.co.uk/privacy",
+  },
+}
 
 export default function PrivacyPolicy() {
   return (
@@ -21,7 +33,7 @@ export default function PrivacyPolicy() {
       </div>
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <div className="prose prose-slate max-w-none space-y-8 text-muted-foreground leading-relaxed">
+        <article className="prose prose-slate max-w-none space-y-8 text-muted-foreground leading-relaxed">
           <section>
             <h2 className="text-lg font-semibold text-navy mb-3">1. Who we are</h2>
             <p>
@@ -191,11 +203,11 @@ export default function PrivacyPolicy() {
               <p>Phone: 020 7183 7192</p>
             </div>
           </section>
-        </div>
+        </article>
 
         <div className="mt-12 pt-6 border-t border-border">
           <Link
-            href="/critical-hire"
+            href="/"
             className="text-sm text-navy hover:text-navy/70 underline"
           >
             &larr; Back to Critical Hire
